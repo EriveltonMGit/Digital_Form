@@ -7,6 +7,7 @@ import "./ProductsHeader.css";
 
 // IMPORT LINK (caso esteja usando Next.js, por exemplo)
 import { Link } from "react-router-dom";
+import React from "react";
 
 function ListSuppliersHeader() {
   return (

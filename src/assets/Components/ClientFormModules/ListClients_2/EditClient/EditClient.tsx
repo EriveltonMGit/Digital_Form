@@ -4,6 +4,7 @@ import { Client } from '../../ListClients_2/page';
 import axios from 'axios';
 import { message, Input, Button } from 'antd'; // Importando Input e Button do Ant Design
 import './EditClient.css';
+import React from 'react';
 
 interface EditClientProps {
   client: Client | null;

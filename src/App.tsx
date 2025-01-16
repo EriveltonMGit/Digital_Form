@@ -1,4 +1,5 @@
 // App.tsx
+import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { Routes, Route } from 'react-router-dom';
@@ -10,7 +11,7 @@ import SupplierList from '../src/assets/Components/SupplierListForm/SupplierList
 import ProductForm from '../src/Templates/Products/ProductForm';
 import ProductList from './assets/Components/Products/ListProducts/page';
 import NotFoundPage from './Templates/NotFoundPage/page'
-import React from 'react';
+
 export default function App() {
   return (
     <Provider store={store}>
