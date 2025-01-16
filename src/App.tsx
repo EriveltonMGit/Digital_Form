@@ -1,0 +1,30 @@
+// App.tsx
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import { Routes, Route } from 'react-router-dom';
+import Header from './assets/Components/Header/page';
+import HomePage from './Templates/Home/page';
+import ClientsPage from './Page/Customers/page';
+import SupplierForm from '../src/Templates/SupplierForm/SupplierForm';
+import SupplierList from '../src/assets/Components/SupplierListForm/SupplierListForm';
+import ProductForm from '../src/Templates/Products/ProductForm';
+import ProductList from './assets/Components/Products/ListProducts/page';
+import NotFoundPage from './Templates/NotFoundPage/page'
+import React from 'react';
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/clients" element={<ClientsPage />} />
+        <Route path="/suppliers" element={<SupplierForm />} />
+        <Route path="/listsuppliers" element={<SupplierList />} />
+        <Route path="/register" element={<ProductForm />} />
+        <Route path="/productList" element={<ProductList />} />
+        {/* Adicione outras rotas conforme necessário */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Provider>
+  );
+}

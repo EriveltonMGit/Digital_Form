@@ -1,0 +1,117 @@
+/*COLORS */
+:root {
+    --primary: #007bff;
+    --red: #be0e0e;
+    --dark: #121315;
+    --blue: #b3e9e7;
+  
+    --yellow: #f2ff00;
+    --gold: #daa520;
+    --teal: #13ff00;
+    --cyan: #e0eeee;
+  
+    --indigo: #5011b6;
+    --purple: #6f42c1;
+    --orange: #fd7e14;
+    --green: #4ade80;
+  
+    --white: #ffffff;
+    --gray: #6c757d31;
+    --gray-dark: #343a40;
+  
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+  
+    --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+    --danger: #dc3545;
+    --light: #f8f9fa;
+  
+    --card: #211d1d;
+  }
+  
+  /* container_costomers */
+  .products-form{
+   
+   width: 100%;
+    position: absolute;
+    top: 0;
+    background-color: var(--cyan);
+  left: 0;
+  z-index: 99;
+  }
+
+
+  /* header_clients */
+  .header_products{
+    border-bottom: 1px solid var(--gray);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  
+    /* area_icon_supplier */
+    .area_icon_products{
+      width: 50%;
+      height: 100%;
+  
+      display: flex;
+      align-items: flex-start;
+      justify-content:flex-start;
+  
+      h2 {
+        width: 80%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+        justify-content:flex-start;
+        margin-left: 2%;
+        gap: 2vw;
+        margin-bottom: 0;
+        padding: 12px;
+       
+      }
+    }
+  
+    ol {
+    
+      width: 35%;
+      height: 100%;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2%;
+     
+      
+      li {
+        
+        font-size: 14px;
+        padding: 0.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: auto;
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          gap: 1vw;
+          font-size: 14px;
+         
+        }
+      }
+      li:hover {
+        color: var(--info);
+      }
+      p {
+      
+        font-size: 14px;
+        padding: 0.2rem;
+        margin-bottom: 0;
+      }
+    }
+  }
+  

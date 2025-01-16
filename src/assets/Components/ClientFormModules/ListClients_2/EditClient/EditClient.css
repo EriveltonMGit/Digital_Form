@@ -1,0 +1,62 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    
+  
+  }
+  
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    max-width: 100%;
+    height:auto;
+    position: relative;
+    form{
+      
+      display: flex;
+      flex-direction: column;
+      input{
+     
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      }
+      button{
+        width: 30%;
+        text-align: center;
+      }
+      
+    }
+    /* btn_edit */
+    .btn_edit{
+     position: absolute;
+    }
+    button {
+      margin-top: 10px;
+    }
+    
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+   
+  }
+  
+ 

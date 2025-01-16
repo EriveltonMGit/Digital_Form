@@ -1,0 +1,126 @@
+/*COLORS */
+:root {
+  --primary: #007bff;
+  --red: #be0e0e;
+  --dark: #121315;
+  --blue: #b3e9e7;
+
+  --yellow: #f2ff00;
+  --gold: #daa520;
+  --teal: #13ff00;
+  --cyan: #e0eeee;
+
+  --indigo: #5011b6;
+  --purple: #6f42c1;
+  --orange: #fd7e14;
+  --green: #4ade80;
+
+  --white: #ffffff;
+  --gray: #6c757d31;
+  --gray-dark: #343a40;
+
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+
+  --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+  --danger: #dc3545;
+  --light: #f8f9fa;
+
+  --card: #211d1d;
+}
+
+
+/* Tamanho customizado para o modal */
+.custom-modal {
+  width: 95% !important;
+  height: 98vh !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-left: 2.5%;
+  margin-top: 2vh;
+  font-size: 10px;
+  overflow-y: scroll; 
+  scrollbar-width: none; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+  border-radius: 10px;
+}
+.custom-modal::-webkit-scrollbar {
+  display: none; 
+}
+/* Ajustando o layout da área do formulário */
+.form_area {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+ overflow-y: scroll; 
+ padding-top: 10px;
+ padding-bottom: 20px;
+ scrollbar-width: none; 
+}
+
+/* Cada linha de campos (4 colunas por linha) */
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 16px;
+  overflow: hidden;
+
+ 
+}
+
+/* Cada campo de formulário dentro de uma coluna */
+.form-col {
+  width: 32%;
+  height: 100%;
+  margin-bottom: 0;
+}
+
+/* Ajustes de estilo do botão */
+.ant-btn-primary {
+  
+  background-color: var(--primary);
+  padding: 0.5rem;
+  font-size: 16px;
+  width: 20%;
+  color: var(--white);
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+bottom: 2vh;
+margin-right: 2vw;
+  
+  /* position: fixed;
+ bottom:  0;
+  right: 0;
+  margin-right: 9%;
+  margin-bottom: 8vh; */
+ 
+  
+}
+/* AQUI FICA O CAMPO DE ENDEREÇO */
+/* form-col_2 */
+.form-col_2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: auto;
+  padding: 0.5rem;
+}
+/* uploandPdf */
+.uploandPdf{
+  border: 1px solid red;
+  width: 20%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 8vh;
+  margin-right: 3vw;
+  z-index: 9999;
+}

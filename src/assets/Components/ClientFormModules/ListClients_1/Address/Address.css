@@ -1,0 +1,71 @@
+/*COLORS */
+:root {
+    --primary: #007bff;
+    --red: #be0e0e;
+    --dark: #121315;
+    --blue: #b3e9e7;
+  
+    --yellow: #f2ff00;
+    --gold: #daa520;
+    --teal: #13ff00;
+    --cyan: #e0eeee;
+  
+   
+    --indigo: #5011b6;
+    --purple: #6f42c1;
+    --orange: #fd7e14;
+    --green: #4ade80;
+  
+    --white: #ffffff;
+    --gray: #6c757d31;
+    --gray-dark: #343a40;
+  
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+  
+    --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    
+    --card: #211d1d;
+  }
+.address-container {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 10px;
+   
+  }
+  
+  .address-form {
+    display: flex;
+    flex-direction: column;
+ 
+  }
+  
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+   
+  }
+  
+  .form-col {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .add-address-btn {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  /* CSS para customizar o estilo do carregamento */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}

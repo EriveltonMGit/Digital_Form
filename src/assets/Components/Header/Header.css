@@ -1,0 +1,138 @@
+/*COLORS */
+:root {
+    --primary: #007bff;
+    --red: #be0e0e;
+    --dark: #121315;
+    --blue: #b3e9e7;
+  
+    --yellow: #f2ff00;
+    --gold: #daa520;
+    --teal: #13ff00;
+    --cyan: #e0eeee;
+  
+   
+    --indigo: #5011b6;
+    --purple: #6f42c1;
+    --orange: #fd7e14;
+    --green: #4ade80;
+  
+    --white: #ffffff;
+    --gray: #6c757d31;
+    --gray-dark: #343a40;
+  
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+  
+    --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    
+    --card: #211d1d;
+  }
+  
+
+/* header_ */
+.header_{
+    border: 1px solid var( --secondary);
+    width: 100%;
+    max-width: 244px;
+    margin-left: 1vw;
+    height: 98vh;
+    box-shadow: 1px 1px 1rem var( --secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    border-radius: 5px;
+     overflow-y: hidden; /* Evitar rolagem vertical */
+    overflow-x: hidden; 
+    z-index: 99999;
+    background-color: var(--blue);
+}
+
+/* logo_ */
+.logo_{
+    width: 100%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: hidden;
+}
+
+/* menu_ul */
+.menu_ul{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgba(215, 219, 223, 0.315);
+    border-radius: 0 !important;
+    overflow-y: hidden;
+}
+
+.menu_ul li {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    overflow: hidden;
+    border-bottom: 1px solid var(--secondary);
+    border-radius: 0 !important;
+    transition: 0.3s all;
+}
+
+
+
+
+.menu_ul .ant-menu-item {
+    line-height: 18px; 
+    padding: 8px 16px; 
+    color: var(--dark);
+}
+
+
+.menu_ul .ant-menu-submenu-title{
+    border-radius: 0 !important;
+    width: 100%;
+    height: 100%;
+    margin-left: 0;
+    margin-top: 0;
+    overflow-y: hidden;
+    color: var(--dark);
+    transition: 0.2s all;
+}
+.menu_ul .ant-menu-submenu-title:hover {
+  color: var( --primary);
+  
+
+    
+}
+
+/* Remover barra de rolagem do item de submenu */
+.menu_ul .ant-menu-submenu {
+    overflow-y: hidden; /* Evita a rolagem vertical do submenu */
+}
+/* Remover o border-radius no hover */
+.menu_ul a:hover {
+    background-color: rgba(0, 0, 0, 0.1);  /* opcional: pode adicionar um fundo no hover */
+    border-radius: 0 !important; /* Garantir que o border-radius não será alterado */
+}
+/* a:focus,
+a:active {
+    transform: none;
+    scale: 1;
+    font-size: inherit;
+} */
+/* Para diminuir o tamanho da fonte no título do submenu */
+.menu_ul .ant-menu-submenu-title {
+    font-size: 12px; 
+    overflow-y: hidden;
+}
+
+/* Para diminuir o tamanho da fonte no submenu */
+.menu_ul .ant-menu-item {
+    font-size: 12px;
+}
