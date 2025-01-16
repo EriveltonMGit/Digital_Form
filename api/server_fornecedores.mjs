@@ -1,16 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import cors from 'cors';  // Importe o pacote CORS
+import cors from 'cors';
 import dotenv from 'dotenv';
-dotenv.config();
 
+dotenv.config();
 const app = express();
 const port = 3002;
 
 // Configuração do MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, { // Usando a variável de ambiente
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -39,18 +39,13 @@ const fornecedorSchema = new mongoose.Schema({
   dataCadastro: { type: Date, default: Date.now },
 });
 
-// Criar o modelo Fornecedor
 const Fornecedor = mongoose.model('Fornecedor', fornecedorSchema);
 
-// -----------------------------------------
 // Rotas para Fornecedores
-// -----------------------------------------
 
 // Listar fornecedores
-// Listar fornecedores com paginação
 app.get('/fornecedores', async (req, res) => {
   const { page = 1, pageSize = 10 } = req.query;
-
   try {
     const fornecedores = await Fornecedor.find()
       .skip((page - 1) * pageSize)
@@ -67,7 +62,6 @@ app.get('/fornecedores', async (req, res) => {
     res.status(500).json({ message: 'Erro ao buscar fornecedores', error: err });
   }
 });
-
 
 // Criar fornecedor
 app.post('/fornecedores', async (req, res) => {
@@ -106,9 +100,7 @@ app.delete('/fornecedores/:id', async (req, res) => {
   }
 });
 
-// -----------------------------------------
 // Iniciar o servidor
-// -----------------------------------------
 app.listen(port, () => {
   console.log(`Servidor backend rodando na porta ${port}`);
 });

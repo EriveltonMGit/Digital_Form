@@ -3,14 +3,14 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+
 dotenv.config();
 const app = express();
 const port = 3001;
 
 // Configuração do MongoDB
-// Configuração do MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, { // Usando a variável de ambiente
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -24,11 +24,7 @@ mongoose
 app.use(cors());
 app.use(bodyParser.json());
 
-// -----------------------------------------
 // Definição dos Schemas e Modelos
-// -----------------------------------------
-
-// Modelo de Cliente
 const clientSchema = new mongoose.Schema({
   nome: String,
   tipo: String,
@@ -43,9 +39,7 @@ const clientSchema = new mongoose.Schema({
 });
 const Client = mongoose.model('Client', clientSchema);
 
-// -----------------------------------------
 // Rotas para Clientes
-// -----------------------------------------
 
 // Listar clientes
 app.get('/clientes', async (_req, res) => {
@@ -98,9 +92,7 @@ app.delete('/clientes/:id', async (req, res) => {
   }
 });
 
-// -----------------------------------------
 // Iniciar o servidor
-// -----------------------------------------
 app.listen(port, () => {
   console.log(`Servidor backend rodando na porta ${port}`);
 });
