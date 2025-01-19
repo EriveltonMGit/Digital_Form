@@ -22,7 +22,7 @@ function Header() {
       icon: <FiUser />,
       label: 'Cadastros',
       children: [
-        { key: '1', label: <Link to="/clientes">Clientes</Link> },
+        { key: '1', label: <Link to="/clients">Clientes</Link> },
         { key: '2', label: <Link to="/suppliers">Cadastro de Fornecedores</Link> },
         { key: '3', label: <Link to="/listsuppliers"> Fornecedores</Link> },
         { key: '4', label: <Link to="/officials">Funcionários</Link> },
