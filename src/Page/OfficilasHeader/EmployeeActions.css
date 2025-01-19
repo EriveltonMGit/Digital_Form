@@ -1,0 +1,90 @@
+/*COLORS */
+:root {
+    --primary: #007bff;
+    --red: #be0e0e;
+    --dark: #121315;
+    --blue: #b3e9e7;
+  
+    --yellow: #f2ff00;
+    --gold: #daa520;
+    --teal: #13ff00;
+    --cyan: #e0eeee;
+  
+   
+    --indigo: #5011b6;
+    --purple: #6f42c1;
+    --orange: #fd7e14;
+    --green: #4ade80;
+  
+    --white: #ffffff;
+    --gray: #6c757d31;
+    --gray-dark: #343a40;
+  
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+  
+    --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    
+    --card: #211d1d;
+  }
+  
+
+.employee-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    
+    position: relative;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    margin-top: 10vh;
+    display: flex;
+    
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px; /* Espaço entre os botões */
+    margin-bottom: 20px;
+  }
+  
+  .add-button, .more-options-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+  }
+  /* add-button */
+  .add-button{
+    background-color: var(--primary);
+    color: var(--white);
+    font-size: 15px;
+  }
+  .add-button:hover, .more-options-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .search-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+  }
+  
+  .search-button:hover {
+    background-color: #e0e0e0;
+  }

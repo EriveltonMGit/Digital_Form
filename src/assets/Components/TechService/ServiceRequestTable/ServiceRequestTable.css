@@ -1,0 +1,95 @@
+/*COLORS */
+:root {
+  --primary: #007bff;
+  --red: #be0e0e;
+  --dark: #121315;
+  --blue: #b3e9e7;
+
+  --yellow: #f2ff00;
+  --gold: #daa520;
+  --teal: #13ff00;
+  --cyan: #e0eeee;
+
+  --indigo: #5011b6;
+  --purple: #6f42c1;
+  --orange: #fd7e14;
+  --green: #4ade80;
+
+  --white: #ffffff;
+  --gray: #6c757d31;
+  --gray-dark: #343a40;
+
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+
+  --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+  --danger: #dc3545;
+  --light: #f8f9fa;
+
+  --card: #211d1d;
+}
+
+/* table_services_list */
+.table_services_list {
+  width: 82%;
+  height: 98%;
+
+  flex-direction: column;
+  padding: 0.5rem;
+  border: 1px solid var(--secondary);
+  overflow-y: hidden;
+  padding: 0.5rem;
+  margin-top: 1vh;
+  margin-right: 1vw;
+  box-shadow: 1px 1px 1rem var(--secondary);
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--light);
+  padding-top: 10vh;
+
+}
+/* services_list_header */
+.services_list_header{
+
+  position: absolute;
+  width: 82%;
+  right: 0;
+  margin-left: 17%;
+  margin-top: 1vh;
+  margin-right: 1vw;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.table_services_list .ant-table-thead > tr > th {
+  height: 60px; /* Ajusta a altura do cabeçalho */
+  border: 1px solid #ddd;
+  background-color: var(--cyan);
+  font-size: 12px;
+
+
+}
+
+.table_services_list .ant-table-tbody > tr > td {
+  height: 50px; /* Ajusta a altura das células */
+  border: 1px solid #ddd;
+  font-size: 12px;
+}
+/* btn_att */
+.btn_att{
+  width: 50%;
+  margin-top: 2vh;
+}
+
+/* CSS para alinhar os botões no footer */
+.modal-footer {
+  display: flex;
+  justify-content: center; /* Alinha os botões à direita */
+  align-items: center;
+  gap: 8px; /* Espaçamento horizontal entre os botões */
+ 
+}
+

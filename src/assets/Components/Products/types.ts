@@ -1,13 +1,11 @@
-// src/types.ts
-
 export interface Product {
+  [x: string]: any;
   id: number;
   nome: string;
   descricao: string;
   preco: number;
   quantidade: number;
   categoria: string;
-  imagem?: string | File; // Adicione a propriedade com o tipo adequado
+  marca: string; // Nova propriedade adicionada
+  imagem?: string | File; // Imagem do produto como string (URL) ou arquivo
 }
-
-  

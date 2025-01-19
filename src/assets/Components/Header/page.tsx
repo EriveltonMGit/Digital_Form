@@ -25,7 +25,7 @@ function Header() {
         { key: '1', label: <Link to="/clients">Clientes</Link> },
         { key: '2', label: <Link to="/suppliers">Cadastro de Fornecedores</Link> },
         { key: '3', label: <Link to="/listsuppliers"> Fornecedores</Link> },
-        { key: '4', label: <Link to="/Templates/Employees">Funcionários</Link> },
+        { key: '4', label: <Link to="/officials">Funcionários</Link> },
       ],
     },
     {
@@ -35,7 +35,7 @@ function Header() {
       children: [
         { key: '5', label: <Link to="/register">Cadastro de Produtos</Link> },
         { key: '6', label: <Link to="/productList">Lista de Produtos</Link> },
-        { key: '7', label: <Link to="/Templates/Brands">Marcas</Link> },
+        { key: '7', label: <Link to="/brandList">Marcas</Link> },
       ],
     },
     {
@@ -43,8 +43,8 @@ function Header() {
       icon: <FiTool />,
       label: 'Serviços',
       children: [
-        { key: '8', label: <Link to="/Templates/ServicesCatalog">Catálogo</Link> },
-        { key: '9', label: <Link to="/Templates/ServiceTypes">Tipos de Serviços</Link> },
+        { key: '8', label: <Link to="/techcatalog">Catálogo</Link> },
+        { key: '9', label: <Link to="/servicerequesttable">Tipos de Serviços</Link> },
       ],
     },
     {

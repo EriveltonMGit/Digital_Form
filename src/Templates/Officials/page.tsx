@@ -1,23 +1,24 @@
 // IMPORT REACT ICONS
 import { IoHomeSharp, IoPeopleSharp, IoSearchSharp } from "react-icons/io5";
-import { FaPlusCircle } from "react-icons/fa";
+
 // IMPORT CSS
-import "./RegisterProductsHeader.css";
+import "./Officials.css";
 
 // IMPORT LINK (caso esteja usando Next.js, por exemplo)
 import { Link } from "react-router-dom";
 import React from "react";
+import EmployeeActions from "../../Page/OfficilasHeader/page";
+import ListOfficials from "../../assets/Components/OfficialsList/ListOfficials";
 
-function RegisterProductsHeader() {
+function Officials() {
   return (
-    <section className="products-form">
-      <nav aria-label="breadcrumb" className="header_products">
+    <section className="container_officials">
+      <nav aria-label="breadcrumb" className="header_officials">
         {/* Header Clientes */}
-        <div className="area_icon_products">
-        <h2 className="title_register_products">
-        <FaPlusCircle />
-        Cadastro de Produto
-      </h2>
+        <div className="area_icon_officials">
+          <h2>
+            Funcionários <IoPeopleSharp />
+          </h2>
         </div>
 
         {/* OL opções */}
@@ -29,8 +30,8 @@ function RegisterProductsHeader() {
           </li>
           <p>&gt;</p>
           <li>
-            <Link to="/productList">
-              <IoPeopleSharp /> Lista de Produtos
+            <Link to="/suppliers">
+              <IoPeopleSharp /> Fornecedores
             </Link>
           </li>
           <p>&gt;</p>
@@ -40,10 +41,12 @@ function RegisterProductsHeader() {
         </ol>
       </nav>
 
-      {/*  AQUI FICA O COMPONENT */}
+      <EmployeeActions />
 
+      {/* aqui fica a atebla coms  lista de funcionarios */}
+      <ListOfficials />
     </section>
   );
 }
 
-export default RegisterProductsHeader;
+export default Officials;

@@ -1,10 +1,10 @@
 {
   "name": "form_dev",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"node ./api/server.mjs\" \"node ./api/server_fornecedores.mjs\" \"node ./api/server_products.mjs\"",
+    "dev": "concurrently \"vite\" \"node ./api/server.mjs\" \"node ./api/server_fornecedores.mjs\" \"node ./api/server_products.mjs\" \"node ./api/server_funcionarios.mjs\" \"node ./api/server_catologServices.mjs\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -31,6 +31,7 @@
     "react-router": "^7.1.1",
     "react-router-dom": "^7.1.1",
     "shortid": "^2.2.16",
+    "uuid": "^11.0.5",
     "yup": "^1.6.1"
   },
   "devDependencies": {

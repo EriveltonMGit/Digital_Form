@@ -19,7 +19,12 @@ const upload = multer({ storage: storage });
 // Rota para criar um novo produto com upload de imagem
 router.post("/create", upload.single("imagem"), async (req, res) => {
   try {
-    const { nome, descricao, preco, quantidade, categoria, status, desconto, peso, cadastradoEm } = req.body;
+    const { nome, descricao, preco, quantidade, categoria, marca, status, desconto, peso, cadastradoEm } = req.body;
+
+    // Verificar se o campo 'marca' é obrigatório
+    if (!marca) {
+      return res.status(400).json({ error: "O campo 'marca' é obrigatório." });
+    }
 
     // URL da imagem, se houver
     const imagem = req.file ? `/uploads/${req.file.filename}` : null;
@@ -31,6 +36,7 @@ router.post("/create", upload.single("imagem"), async (req, res) => {
       preco,
       quantidade,
       categoria,
+      marca, // Agora inclui o campo 'marca'
       status,
       desconto,
       peso,

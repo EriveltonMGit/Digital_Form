@@ -1,0 +1,125 @@
+/*COLORS */
+:root {
+    --primary: #007bff;
+    --red: #be0e0e;
+    --dark: #121315;
+    --blue: #b3e9e7;
+  
+    --yellow: #f2ff00;
+    --gold: #daa520;
+    --teal: #13ff00;
+    --cyan: #e0eeee;
+  
+    --indigo: #5011b6;
+    --purple: #6f42c1;
+    --orange: #fd7e14;
+    --green: #4ade80;
+  
+    --white: #ffffff;
+    --gray: #6c757d31;
+    --gray-dark: #343a40;
+  
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+  
+    --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+    --danger: #dc3545;
+    --light: #f8f9fa;
+  
+    --card: #211d1d;
+  }
+  
+  /* container_list_clients */
+  .container_list_officials {
+    width: 100%;
+    height: 80%;
+    padding: 20px;
+    overflow-y: auto; 
+    margin-top: 12%;
+  }
+  
+  .employees_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-top: 6vh;
+  }
+  
+  .employees_table th,
+  .employees_table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  
+    font-size: 12px;
+  }
+  
+  .employees_table th {
+    background-color: #f2f2f2;
+    font-size: 14px;
+    
+  }
+  
+  /* action_btn */
+  .action_btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  
+    width: 100%;
+    gap: 1vw;
+  }
+  /*   .search_button */
+  .search_button {
+    padding: 0.3rem;
+    color: white;
+    background-color: var(--primary);
+    border-radius: 5px;
+    font-size: 13px;
+    
+  }
+  .search_button:hover {
+    background-color: var(--dark);
+  }
+  /* search_container */
+  .search_container_input {
+    position: absolute;
+    margin-top: -3.5vh;
+    width:100%;
+    height: -8vh;
+    left: 0;
+    padding: 10px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    input{
+  width: 80%;
+    }
+  }
+  /*  .edit_button */
+  .edit_button {
+    padding: 0.3rem;
+    color: white;
+    background-color: var(--orange);
+    border-radius: 5px;
+    font-size: 13px;
+  }
+  .edit_button:hover {
+    background-color: #e06907;
+  }
+  /* delete_button */
+  .delete_button {
+    padding: 0.3rem;
+    color: white;
+
+    border-radius: 5px;
+    font-size: 13px;
+  }
+  .delete_button:hover {
+    background-color: var(--danger);
+  }
+  

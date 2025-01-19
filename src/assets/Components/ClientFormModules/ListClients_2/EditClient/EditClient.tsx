@@ -33,7 +33,7 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editedClient) {
-      console.log("Client to be updated:", editedClient);
+      // console.log("Client to be updated:", editedClient);
   
       if (!editedClient.id) {
         message.error('ID do cliente não encontrado');

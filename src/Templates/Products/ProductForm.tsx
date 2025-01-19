@@ -9,16 +9,19 @@ import {
   Upload,
   message,
 } from "antd";
-
 import { UploadOutlined } from "@ant-design/icons";
-// IMPORT CSS
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../redux/productsSlice"; // Importando a ação para adicionar um produto
 import "./ProductForm.css";
-import RegisterProductsHeader from "../../Page/RegisterProductsHeader/page";
+import CustomHeader from "../../Page/CustomHeader/CustomHeader";
+import { IoHomeSharp, IoPeopleSharp, IoSearchSharp } from "react-icons/io5";
+import { FaPlusCircle } from "react-icons/fa";
 
 const { Option } = Select;
 
 const ProductForm: React.FC = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: any) => {
@@ -41,6 +44,7 @@ const ProductForm: React.FC = () => {
       const data = await response.json();
       if (response.ok) {
         message.success("Produto cadastrado com sucesso!");
+        dispatch(addProduct(data)); // Despacha a ação para adicionar o produto ao Redux
         form.resetFields();
       } else {
         message.error(data.message || "Erro ao cadastrar o produto.");
@@ -54,15 +58,27 @@ const ProductForm: React.FC = () => {
 
   return (
     <section className="container_products">
-      <RegisterProductsHeader />
+      <CustomHeader
+        title="Cadastro de Produtos"
+        icon={<FaPlusCircle />}
+        breadcrumbs={[
+          { label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
+          {
+            label: "Lista de Produ...",
+            icon: <IoPeopleSharp />,
+            link: "/productList",
+          },
+          { label: "Listar", icon: <IoSearchSharp /> },
+        ]}
+      />
+
       <Form
-        form={form} // Passando a instância do form aqui
+        form={form} // Passando a instância do form para o Form
         layout="vertical"
         onFinish={onFinish}
         initialValues={{ status: "ativo" }}
         className="form_products"
       >
-        {/* Agrupando as primeiras seções do formulário */}
         <div className="form_group">
           <div className="form_section">
             <Form.Item
@@ -87,7 +103,6 @@ const ProductForm: React.FC = () => {
             </Form.Item>
           </div>
 
-          {/* Preço, Quantidade, Desconto e Peso */}
           <div className="form_section_preco">
             <Form.Item
               label="Preço (R$)"
@@ -127,12 +142,10 @@ const ProductForm: React.FC = () => {
               />
             </Form.Item>
 
-            {/* Novo campo de Desconto */}
             <Form.Item
               label="Desconto (%)"
               name="desconto"
               rules={[
-                { required: false, message: "Insira o valor do desconto" },
                 {
                   type: "number",
                   min: 0,
@@ -150,12 +163,10 @@ const ProductForm: React.FC = () => {
               />
             </Form.Item>
 
-            {/* Novo campo de Peso */}
             <Form.Item
               label="Peso (kg)"
               name="peso"
               rules={[
-                { required: false, message: "Insira o peso do produto" },
                 {
                   type: "number",
                   min: 0,
@@ -173,7 +184,6 @@ const ProductForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Seção para Categoria, Status e Data */}
         <div className="form_section_2">
           <div className="form_row">
             <Form.Item
@@ -208,7 +218,6 @@ const ProductForm: React.FC = () => {
             </Form.Item>
           </div>
 
-          {/* Campo de Data de Cadastro */}
           <div className="form_row">
             <Form.Item
               label="Data de Cadastro"
@@ -216,44 +225,44 @@ const ProductForm: React.FC = () => {
               rules={[
                 { required: true, message: "Selecione a data de cadastro" },
               ]}
-              className="form_item_half"
             >
               <DatePicker style={{ width: "100%" }} />
             </Form.Item>
-          </div>
-
-          {/* Novo campo para Imagem */}
-          <div className="form_row">
             <Form.Item
-              label="Imagem do Produto"
-              name="imagem"
-              valuePropName="fileList"
-              getValueFromEvent={(e: any) =>
-                Array.isArray(e) ? e : e?.fileList
-              }
-              extra="Carregue a imagem do produto (JPG, PNG, etc.)"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor, envie uma imagem do produto!",
-                },
-              ]}
+              label="Marca"
+              name="marca"
+              rules={[{ required: true, message: "Insira a marca do produto" }]}
             >
-              <Upload
-                name="file"
-                listType="picture-card"
-                beforeUpload={() => false} // Impede upload automático
-              >
-                <div>
-                  <UploadOutlined />
-                  <div style={{ marginTop: 8 }}>Clique para carregar</div>
-                </div>
-              </Upload>
+              <Input placeholder="Ex.: Dell, Samsung, LG" />
             </Form.Item>
           </div>
+
+          <Form.Item
+            label="Imagem do Produto"
+            name="imagem"
+            valuePropName="fileList"
+            getValueFromEvent={(e: any) => (Array.isArray(e) ? e : e?.fileList)}
+            extra="Carregue a imagem do produto (JPG, PNG, etc.)"
+            rules={[
+              {
+                required: true,
+                message: "Por favor, envie uma imagem do produto!",
+              },
+            ]}
+          >
+            <Upload
+              name="file"
+              listType="picture-card"
+              beforeUpload={() => false}
+            >
+              <div>
+                <UploadOutlined />
+                <div style={{ marginTop: 8 }}>Clique para carregar</div>
+              </div>
+            </Upload>
+          </Form.Item>
         </div>
 
-        {/* Botão de submissão */}
         <Form.Item className="area_btn_products">
           <Button
             type="primary"

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Modal, Form, Input, InputNumber, message } from "antd";
 import { Product } from "../../../Components/Products/types";
+import { Upload, Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import "./EditProducts.css";
 import React from "react";
 
@@ -33,13 +35,13 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       message.error("ID do produto não encontrado.");
       return;
     }
-  
+
     try {
       const updatedProduct = await form.validateFields();
       setLoading(true);
-  
+
       const formData = new FormData();
-  
+
       // Adicionar campos ao FormData
       Object.entries(updatedProduct).forEach(([key, value]) => {
         if (key === "imagem" && value instanceof File) {
@@ -48,12 +50,12 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           formData.append(key, String(value)); // Outros campos
         }
       });
-  
+
       // Adicionar a imagem atual caso nenhuma nova tenha sido selecionada
       if (!form.getFieldValue("imagem") && product.imagem) {
         formData.append("imagem", product.imagem); // Imagem existente
       }
-  
+
       const response = await fetch(
         `http://localhost:3003/produtos/${product.id}`,
         {
@@ -61,11 +63,11 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           body: formData,
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Erro ao atualizar produto");
       }
-  
+
       const data = await response.json();
       onSave(data);
       message.success("Produto atualizado com sucesso!");
@@ -76,8 +78,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       setLoading(false);
     }
   };
-  
-  
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -98,7 +98,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       width={800}
     >
       <section className="modal-content-section">
-        <Form form={form} layout="vertical">
+        <Form
+          form={form} // Passando a instância do form para o Form
+          layout="vertical"
+        >
           <Form.Item
             label="Nome"
             name="nome"
@@ -134,12 +137,16 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Imagem"
-            name="imagem"
-            valuePropName="file"
-          >
-            <Input type="file" onChange={handleFileChange} />
+          <Form.Item label="Imagem" name="imagem" valuePropName="file">
+            <Upload
+              beforeUpload={(file) => {
+                form.setFieldsValue({ imagem: file });  // Definindo o valor do arquivo
+                return false; // Impede que o arquivo seja enviado automaticamente
+              }}
+              showUploadList={false} // Não exibe a lista de uploads
+            >
+              <Button icon={<UploadOutlined />}>Selecionar Imagem</Button>
+            </Upload>
           </Form.Item>
         </Form>
       </section>

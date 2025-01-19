@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import multer from "multer";
+import multer from 'multer';
 import fs from 'fs'; 
 import dotenv from 'dotenv';
 
@@ -11,7 +11,7 @@ dotenv.config();
 // Configuração do armazenamento de arquivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "uploads/"); // Note que isso pode não funcionar no Vercel
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -21,7 +21,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const app = express();
-const port = 3003;
 
 // Configuração do MongoDB
 mongoose
@@ -48,6 +47,7 @@ const productSchema = new mongoose.Schema({
   desconto: { type: Number, default: 0 },
   peso: { type: Number, default: 0 },
   categoria: { type: String, required: true },
+  marca: { type: String, required: true }, // Adicionando campo marca
   status: { type: String, default: 'ativo' },
   dataCadastro: { type: Date, default: Date.now },
   imagem: { type: String }, // URL ou caminho para a imagem do produto
@@ -57,13 +57,14 @@ const Product = mongoose.model('Product', productSchema);
 
 // Rota para criar um produto
 app.post('/produtos', upload.single('imagem'), async (req, res) => {
-  const { nome, descricao, preco, quantidade, desconto, peso, categoria, status } = req.body;
+  const { nome, descricao, preco, quantidade, desconto, peso, categoria, marca, status } = req.body;
   const imagem = req.file ? `/uploads/${req.file.filename}` : null;
 
   if (!imagem) {
     return res.status(400).json({ message: 'Imagem é obrigatória' });
   }
 
+  // Criando o novo produto com o campo marca
   const novoProduto = new Product({
     nome,
     descricao,
@@ -72,6 +73,7 @@ app.post('/produtos', upload.single('imagem'), async (req, res) => {
     desconto,
     peso,
     categoria,
+    marca, // Marca está sendo incluída aqui
     status,
     imagem,
   });
@@ -101,7 +103,7 @@ app.get('/produtos', async (req, res) => {
 // Rota para atualizar um produto
 app.put('/produtos/:id', upload.single('imagem'), async (req, res) => {
   const { id } = req.params;
-  const { nome, descricao, preco, quantidade, desconto, peso, categoria, status } = req.body;
+  const { nome, descricao, preco, quantidade, desconto, peso, categoria, marca, status } = req.body;
 
   try {
     const existingProduct = await Product.findById(id);
@@ -117,6 +119,7 @@ app.put('/produtos/:id', upload.single('imagem'), async (req, res) => {
       desconto,
       peso,
       categoria,
+      marca,  // Atualizando a marca
       status,
     };
 
@@ -147,7 +150,7 @@ app.delete('/produtos/:id', async (req, res) => {
     if (deletedProduct.imagem) {
       const path = `uploads/${deletedProduct.imagem.split('/')[2]}`;
       console.log(`Tentando excluir a imagem do produto: ${path}`);
-      fs.unlinkSync(path);
+      fs.unlinkSync(path); // Isto pode não funcionar no Vercel
     }
 
     return res.status(200).json({ message: 'Produto excluído com sucesso' });
@@ -158,7 +161,7 @@ app.delete('/produtos/:id', async (req, res) => {
   }
 });
 
-// Iniciar o servidor
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+// Exportar como função serverless
+export default (req, res) => {
+  app(req, res);
+};

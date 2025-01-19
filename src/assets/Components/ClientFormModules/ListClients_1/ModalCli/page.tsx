@@ -33,9 +33,7 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
 
   const handleFormSubmit = async (values: FormValues) => {
     try {
-      await form.validateFields();
-      // console.log('Valores do formulário:', values);  // Verifique os dados enviados
-    
+      await form.validateFields();  
       // Enviando os dados para o backend
       const response = await axios.post("http://localhost:3001/clientes", values);
     

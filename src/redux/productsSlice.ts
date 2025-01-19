@@ -1,13 +1,31 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Product } from '../../src/assets/Components/Products/types';
 
 interface ProductsState {
   productsData: Product[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: ProductsState = {
   productsData: [],
+  loading: false,
+  error: null,
 };
+
+// Ação assíncrona para buscar produtos
+export const fetchProducts = createAsyncThunk<Product[]>(
+  'products/fetchProducts',
+  async () => {
+    const response = await fetch('http://localhost:3003/produtos', {
+      method: 'GET', // Ou 'POST' dependendo da sua API
+    });
+    if (!response.ok) {
+      throw new Error('Falha ao carregar os produtos');
+    }
+    return await response.json(); // Retorna os dados da API
+  }
+);
 
 const productsSlice = createSlice({
   name: 'products',
@@ -36,8 +54,24 @@ const productsSlice = createSlice({
       );
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true; // Carregando os dados
+        state.error = null; // Resetando o erro, se houver
+      })
+      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
+        state.productsData = action.payload; // Dados recebidos da API
+        state.loading = false; // Carregamento concluído
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false; // Erro ao carregar
+        state.error = action.error.message || 'Falha ao carregar os produtos';
+      });
+  },
 });
 
 export const { setProductsData, addProduct, updateProduct, deleteProduct } =
   productsSlice.actions;
+
 export default productsSlice.reducer;

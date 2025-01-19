@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  console.log('Recebido POST em /fornecedores:', req.body);
+
   const newSupplier = new Supplier(req.body);
   try {
     await newSupplier.save();

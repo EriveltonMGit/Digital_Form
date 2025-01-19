@@ -1,22 +1,16 @@
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Button, message, Input } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import {
-  deleteProduct,
-  setProductsData,
-} from "../../../../redux/productsSlice";
+import { EditOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { deleteProduct, setProductsData } from "../../../../redux/productsSlice";
 import { RootState } from "../../../../redux/store";
 import { Product } from "../../../Components/Products/types";
 import EditProductModal from "../EditProductModal/EditProductModal";
 import DeleteProductModal from "../DeleteProductModal/DeleteProductModal";
 import "./ListProducts.css";
-import ProductsHeader from "../../../../Page/ProductsHeader/page";
-import React from "react";
+import CustomHeader from "../../../../Page/CustomHeader/CustomHeader";
+import { IoHomeSharp, IoPeopleSharp, IoSearchSharp } from "react-icons/io5";
+import { FaBox } from "react-icons/fa";
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,10 +24,8 @@ const ProductList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Função para deletar produto
-
   const handleDelete = async (_id: string) => {
     try {
-      // Realiza a exclusão no backend
       const response = await fetch(`http://localhost:3003/produtos/${_id}`, {
         method: "DELETE",
       });
@@ -42,9 +34,7 @@ const ProductList: React.FC = () => {
         throw new Error("Erro ao excluir o produto");
       }
 
-      // Atualiza o estado local (Redux) para remover o produto excluído
-      dispatch(deleteProduct(_id)); // Atualiza o Redux imediatamente
-      // message.success("Produto excluído com sucesso!");
+      dispatch(deleteProduct(_id));
     } catch (error: unknown) {
       if (error instanceof Error) {
         message.error(`Erro: ${error.message}`);
@@ -88,6 +78,7 @@ const ProductList: React.FC = () => {
         product.nome.toLowerCase().includes(searchTermLower) ||
         product.descricao.toLowerCase().includes(searchTermLower) ||
         product.categoria.toLowerCase().includes(searchTermLower) ||
+        product.marca?.toLowerCase().includes(searchTermLower) || // Adicionado filtro por marca
         product.id?.toString().toLowerCase().includes(searchTermLower)
     );
   }, [products, searchTerm]);
@@ -130,6 +121,12 @@ const ProductList: React.FC = () => {
       dataIndex: "categoria",
       key: "categoria",
       width: 200,
+    },
+    {
+      title: "Marca", // Nova coluna
+      dataIndex: "marca",
+      key: "marca",
+      width: 150,
     },
     {
       title: "Status",
@@ -179,8 +176,15 @@ const ProductList: React.FC = () => {
 
   return (
     <section className="container_list_products">
-      <ProductsHeader />
-
+      {/* header */}
+      <CustomHeader
+        title="Lista de Produtos"
+        icon={<FaBox />}
+        breadcrumbs={[{ label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
+          { label: "Cadastro de Produ...", icon: <IoPeopleSharp />, link: "/register" },
+          { label: "Marcas", icon: <IoSearchSharp />, link: "/brandList"  },
+        ]}
+      />
       <div className="area_list_products">
         <Input
           placeholder="Pesquisar produtos..."
@@ -204,10 +208,10 @@ const ProductList: React.FC = () => {
         visible={editModalVisible}
         onClose={() => setEditModalVisible(false)}
         product={selectedProduct}
-        onSave={(product) => {
+        onSave={(updatedProduct) => {
           dispatch(
             setProductsData(
-              products.map((p) => (p.id === product.id ? product : p))
+              products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
             )
           );
           setEditModalVisible(false);
@@ -217,7 +221,11 @@ const ProductList: React.FC = () => {
       <DeleteProductModal
         visible={deleteModalVisible}
         onClose={() => setDeleteModalVisible(false)}
-        onDelete={() => handleDelete(String(selectedProduct?.id ?? ""))}
+        onDelete={() => {
+          if (selectedProduct) {
+            handleDelete(String(selectedProduct.id));
+          }
+        }}
       />
     </section>
   );

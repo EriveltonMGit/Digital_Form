@@ -51,6 +51,7 @@
   right: 0;
   background-color: var(--light);
   gap: 15px;
+  padding-top: 10vh;
 }
 /* title_register_products */
 .title_register_products{
@@ -59,6 +60,7 @@
     justify-content: space-around;
     gap: 16px;
     margin-left: 2%;
+    
 }
 /* form_products */
 .form_products {
@@ -68,15 +70,17 @@
   justify-content: center;
   flex-direction: column;
   overflow-y: auto;
-  padding-top: 50vh;
+  padding-top: 40vh;
   padding: 20px;
   gap: 15px;
-  margin-top: 10vh;
+ 
 }
 /* form_group */
 .form_group {
   width: 100%;
-  margin-top: 30vh;
+  height: auto;
+  margin-top: 50vh;
+
 }
 .form_section {
   width: 100%;

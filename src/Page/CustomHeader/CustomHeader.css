@@ -31,19 +31,22 @@
   }
   
   /* container_costomers */
-  .products-form{
+  .custom-header{
    
    width: 100%;
     position: absolute;
     top: 0;
     background-color: var(--cyan);
-  left: 0;
-  z-index: 99;
+    left: 0;
+    z-index: 99;
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
   }
 
 
   /* header_clients */
-  .header_products{
+  .header-content{
     border-bottom: 1px solid var(--gray);
     width: 100%;
     height: 100%;
@@ -53,13 +56,14 @@
     overflow: hidden;
   
     /* area_icon_supplier */
-    .area_icon_products{
+    .header-title{
       width: 50%;
       height: 100%;
   
       display: flex;
       align-items: flex-start;
       justify-content:flex-start;
+      margin-bottom: 0;
   
       h2 {
         width: 80%;
@@ -71,18 +75,18 @@
         gap: 2vw;
         margin-bottom: 0;
         padding: 12px;
-       
       }
     }
   
-    ol {
-    
-      width: 35%;
+    .breadcrumb {
+       
+      width: 40%;
       height: 100%;
       margin-bottom: 0;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
+      margin-right: 2vw;
       gap: 2%;
      
       

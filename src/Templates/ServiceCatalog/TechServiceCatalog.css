@@ -1,0 +1,128 @@
+/*COLORS */
+:root {
+  --primary: #007bff;
+  --red: #be0e0e;
+  --dark: #121315;
+  --blue: #b3e9e7;
+
+  --yellow: #f2ff00;
+  --gold: #daa520;
+  --teal: #13ff00;
+  --cyan: #e0eeee;
+
+  --indigo: #5011b6;
+  --purple: #6f42c1;
+  --orange: #fd7e14;
+  --green: #4ade80;
+
+  --white: #ffffff;
+  --gray: #6c757d31;
+  --gray-dark: #343a40;
+
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+
+  --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+  --danger: #dc3545;
+  --light: #f8f9fa;
+
+  --card: #211d1d;
+}
+
+/* TechServiceCatalog */
+.TechServiceCatalog {
+  width: 82%;
+  height: 98%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 0.5rem;
+  border: 1px solid var(--secondary);
+  overflow-y: hidden;
+  padding: 0.5rem;
+  margin-top: 1vh;
+  margin-right: 1vw;
+  box-shadow: 1px 1px 1rem var(--secondary);
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--light);
+  padding: 10px;
+  padding-bottom: 10px;
+}
+
+/* title_catalog */
+.title_catalog {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2%;
+  background-color: var(--blue);
+  
+}
+/* input_services_catalog */
+.input_services_catalog {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 12vh;
+  
+}
+
+/* table_catalog_services */
+.table_catalog_services {
+  height: 90%;
+  margin-bottom: 2vh;
+  overflow-y: scroll;
+
+  strong {
+    color: #4ade80;
+    font-size: 16px;
+  }
+}
+
+.card-icon {
+  font-size: 50px;
+  margin: 0 auto 10px;
+  display: flex;
+  justify-content: center;
+  color: var(--info);
+}
+
+.modal_services {
+  position: absolute;
+  margin-left: 15%;
+  top: 0;
+  margin-top: 2%;
+  
+}
+
+/* Ajustar o tamanho do modal */
+.modal_services .ant-modal {
+  width: 80% !important; /* Define a largura do modal */
+  max-width: 1000px !important; /* Define o tamanho máximo */
+  height: auto !important; /* Ajuste a altura conforme necessário */
+
+ 
+  
+}
+
+/* Ajustar a largura do conteúdo dentro do modal */
+.modal_services .ant-modal-content {
+  padding: 20px; /* Ajuste o preenchimento dentro do modal */
+  width: 1000px;
+}
+
+/* Ajustar o título do modal */
+.modal_services .ant-modal-header {
+  background-color: #f0f2f5; /* Exemplo de cor de fundo do cabeçalho */
+  border-bottom: 1px solid #e8e8e8; /* Ajustar a borda */
+}
+
+.modal_services .ant-modal-title {
+  font-size: 24px; /* Ajuste o tamanho do título */
+  font-weight: 600; /* Ajuste o peso da fonte do título */
+}

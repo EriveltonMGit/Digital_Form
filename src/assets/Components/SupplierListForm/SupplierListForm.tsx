@@ -1,11 +1,13 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Table, message, Input, Empty } from "antd"; // Adicionando o componente Empty do Ant Design
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
-import ListSuppliersHeader from "../../../Page/ListSuppliers/page";
-import './SupplierListForm.css';
+import "./SupplierListForm.css";
 import React from "react";
-
+import CustomHeader from "../../../Page/CustomHeader/CustomHeader";
+// IMPORT REACT ICONS
+import { IoHomeSharp, IoPeopleSharp, IoSearchSharp } from "react-icons/io5";
+import { FaBox } from "react-icons/fa";
 interface PaginationConfig {
   current: number;
   pageSize: number;
@@ -13,7 +15,7 @@ interface PaginationConfig {
 }
 
 const SupplierList: React.FC = () => {
-  const [suppliers, setSuppliers] = useState<any[]>([]);  // Dados recebidos da API
+  const [suppliers, setSuppliers] = useState<any[]>([]); // Dados recebidos da API
   const [loading, setLoading] = useState<boolean>(true);
   const [pagination, setPagination] = useState<PaginationConfig>({
     current: 1,
@@ -29,7 +31,7 @@ const SupplierList: React.FC = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log(data); // Verifique a resposta da API
+        // Remova ou comente a linha abaixo
         if (data.data && Array.isArray(data.data)) {
           setSuppliers(data.data); // Armazene os dados da API
           setPagination({
@@ -91,8 +93,20 @@ const SupplierList: React.FC = () => {
 
   return (
     <section className="container_supplier">
-      <ListSuppliersHeader />
-
+      {/* header */}
+      <CustomHeader
+        title="Lista de Fornecedores"
+        icon={<FaBox />}
+        breadcrumbs={[
+          { label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
+          {
+            label: "Cadastro de Forne...",
+            icon: <IoPeopleSharp />,
+            link: "/suppliers",
+          },
+          { label: "Em breve", icon: <IoSearchSharp />, link: "" },
+        ]}
+      />
       {/* Campo de filtro com input Ant Design e lupa */}
       <div className="area_list_suppliers_form">
         <Input
@@ -118,7 +132,7 @@ const SupplierList: React.FC = () => {
             pageSize: pagination.pageSize,
             total: pagination.total,
             showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '50'],
+            pageSizeOptions: ["10", "20", "50"],
           }} // Configuração da paginação
           onChange={handleTableChange}
           bordered

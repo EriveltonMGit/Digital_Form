@@ -92,9 +92,6 @@ function ListClients_2() {
       client.telefone.includes(searchTerm) ||
       client.celular.includes(searchTerm)
   );
-
-  // console.log(filteredClients);
-
   return (
     <section className="container_list_clients_2">
       {loading ? (
@@ -142,7 +139,7 @@ function ListClients_2() {
             <tbody>
               {filteredClients.length > 0 ? (
                 filteredClients.map((client: Client, index: number) => {
-                  // console.log(client);
+          
                   const clientKey =
                     client.id || `${index}-${client.nome}-${client.email}`;
                   return (

@@ -9,9 +9,14 @@ import {
   Col,
   message,
 } from "antd";
-
+// IMPORT REACT ICONS
+import { IoSearchSharp } from "react-icons/io5";
+import { FaPlusCircle } from "react-icons/fa";
+import { FaHouseUser } from "react-icons/fa";
+import { CiViewTable } from "react-icons/ci";
 import "./SupplierForm.css";
-import SupplierHeader from "../../Page/SupplierHeader/page";
+import CustomHeader from "../../Page/CustomHeader/CustomHeader";
+
 const { Option } = Select;
 
 const SupplierForm: React.FC = () => {
@@ -19,7 +24,6 @@ const SupplierForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: any) => {
-    console.log(values); // Verifique os dados enviados
     setLoading(true);
 
     // Verifique se todos os campos obrigatórios estão preenchidos antes de enviar
@@ -72,7 +76,20 @@ const SupplierForm: React.FC = () => {
 
   return (
     <section className="container_supplier">
-      <SupplierHeader />
+      {/* <Header /> */}
+      <CustomHeader
+        title="Cadastro de Fornecedores"
+        icon={<FaPlusCircle />}
+        breadcrumbs={[
+          { label: "Clientes", icon: <FaHouseUser />, link: "/clients" },
+          {
+            label: "Lista de Forne...",
+            icon: <CiViewTable />,
+            link: "/listsuppliers",
+          },
+          { label: "Em breve", icon: <IoSearchSharp />, link: "" },
+        ]}
+      />
       <Form
         form={form}
         layout="vertical"

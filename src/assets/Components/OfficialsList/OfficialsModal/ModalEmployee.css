@@ -1,0 +1,22 @@
+.custom-modal {
+    display: flex;
+    justify-content: flex-start;
+    align-items:flex-end;
+  }
+
+ /* form_area_officials */
+ .form_area_officials{
+  
+  margin-bottom: 5%;
+ }
+ 
+  
+  /* form-row */
+  .form-row{
+   
+    align-items: center;
+    justify-content: space-between;
+    .input_nome_oofficials{
+      width: 30vw;
+    }
+  }

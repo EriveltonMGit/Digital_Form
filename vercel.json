@@ -4,11 +4,33 @@
     {
       "src": "api/index.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/server.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/server_fornecedores.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/server_products.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/server_funcionarios.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/server_catologServices.mjs",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     { "src": "/clientes(.*)", "dest": "/api/server.mjs" },
     { "src": "/fornecedores(.*)", "dest": "/api/server_fornecedores.mjs" },
-    { "src": "/produtos(.*)", "dest": "/api/server_products.mjs" }
+    { "src": "/produtos(.*)", "dest": "/api/server_products.mjs" },
+    { "src": "/funcionarios(.*)", "dest": "/api/server_funcionarios.mjs" },
+    { "src": "/catalogServices(.*)", "dest": "/api/server_catologServices.mjs" }
   ]
 }

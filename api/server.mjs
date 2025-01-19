@@ -5,8 +5,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 const app = express();
-const port = 3001;
 
 // Configuração do MongoDB
 mongoose
@@ -92,7 +92,7 @@ app.delete('/clientes/:id', async (req, res) => {
   }
 });
 
-// Iniciar o servidor
-app.listen(port, () => {
-  console.log(`Servidor backend rodando na porta ${port}`);
-});
+// Exportar como função serverless
+export default (req, res) => {
+  app(req, res);
+};
