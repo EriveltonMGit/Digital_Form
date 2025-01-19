@@ -35,7 +35,7 @@ function ListClients_2() {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/clientes");
+        const response = await axios.get("https://clientes-production-df47.up.railway.app/clientes");
         dispatch(setClientsData(response.data));
       } catch (err) {
         console.error(err); // Usando o 'err' para logar o erro

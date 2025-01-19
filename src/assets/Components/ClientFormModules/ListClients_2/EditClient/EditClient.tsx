@@ -42,7 +42,7 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
   
       setLoading(true);
       try {
-        await axios.put(`http://localhost:3001/clientes/${editedClient.id}`, editedClient);
+        await axios.put(`https://clientes-production-df47.up.railway.app/clientes/${editedClient.id}`, editedClient);
         onSave(editedClient); // Atualiza o Redux com o cliente editado
         setHasSaved(true);
         onClose();

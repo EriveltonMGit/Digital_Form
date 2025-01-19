@@ -20,7 +20,7 @@ const DeleteClient: React.FC<DeleteClientProps> = ({ clientId, onClose }) => {
     if (password === "admin") {
       try {
         if (clientId) {
-          await axios.delete(`http://localhost:3001/clientes/${clientId}`);
+          await axios.delete(`https://clientes-production-df47.up.railway.app/clientes/${clientId}`);
           dispatch(deleteClient(clientId)); // Atualiza o Redux
           message.success("Cliente excluído com sucesso!"); // Mensagem de sucesso
         }
