@@ -26,6 +26,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Rota para a raiz
+app.get('/', (_req, res) => {
+  res.json({ message: 'Bem-vindo à API de Clientes!' });
+});
+
 // Schema e Modelo do Cliente
 const clientSchema = new mongoose.Schema({
   nome: { type: String, required: true },
