@@ -10,6 +10,9 @@ import EditClient from "../ListClients_2/EditClient/EditClient";
 import DeleteClient from "../ListClients_2/DeleteClient/DeleteClient";
 import React from "react";
 
+// Definindo a URL base para a API
+const baseURL = "https://clientes-production-df47.up.railway.app/clientes"; // URL da API de produção
+
 export interface Client {
   id: string;
   nome: string;
@@ -35,7 +38,7 @@ function ListClients_2() {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("https://clientes-production-df47.up.railway.app/clientes");
+        const response = await axios.get(`${baseURL}/clientes`);
         dispatch(setClientsData(response.data));
       } catch (err) {
         console.error(err); // Usando o 'err' para logar o erro
@@ -48,16 +51,16 @@ function ListClients_2() {
     fetchClients();
   }, [dispatch]);
 
-  // Na função handleUpdateClient
+  // Função de atualização do cliente
   const handleUpdateClient = async (updatedClient: Client) => {
     setLoading(true);
     try {
       await axios.put(
-        `http://localhost:3001/clientes/${updatedClient.id}`,
-        updatedClient
+        `${baseURL}/clientes/${updatedClient.id}`, // Corrigindo a URL para produção
+        updatedClient // Dados que você quer atualizar
       );
-      dispatch(updateClient(updatedClient)); // Atualiza o cliente no Redux
-      setEditingClient(null);
+      dispatch(updateClient(updatedClient)); // Atualiza os dados no Redux
+      setEditingClient(null); // Fecha a janela de edição
       message.success("Cliente atualizado com sucesso!");
     } catch (err) {
       console.error(err);
@@ -92,6 +95,7 @@ function ListClients_2() {
       client.telefone.includes(searchTerm) ||
       client.celular.includes(searchTerm)
   );
+
   return (
     <section className="container_list_clients_2">
       {loading ? (
@@ -139,7 +143,6 @@ function ListClients_2() {
             <tbody>
               {filteredClients.length > 0 ? (
                 filteredClients.map((client: Client, index: number) => {
-          
                   const clientKey =
                     client.id || `${index}-${client.nome}-${client.email}`;
                   return (
