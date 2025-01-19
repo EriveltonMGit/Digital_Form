@@ -23,7 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Ignorar arquivo .env
+.env
 
 node_modules/
-.env
 uploads/
+
+.vercel

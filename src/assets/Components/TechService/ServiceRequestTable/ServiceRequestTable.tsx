@@ -21,7 +21,9 @@ interface ServiceRequest {
   status?: string;
   createdAt: string;
 }
-
+interface ServiceRequestTableProps {
+  serviceRequests: ServiceRequest[];
+}
 const ServiceRequestTable: React.FC = () => {
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
   const [editingService, setEditingService] = useState<ServiceRequest | null>(

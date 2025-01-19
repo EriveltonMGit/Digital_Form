@@ -1,12 +1,13 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
+const port = 3006;
 
 // Configuração do MongoDB
 mongoose
@@ -14,9 +15,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('MongoDB conectado'))
+  .then(() => console.log("MongoDB conectado"))
   .catch((err) => {
-    console.error('Erro na conexão com o MongoDB', err);
+    console.error("Erro na conexão com o MongoDB", err);
     process.exit(1); // Sai do processo se a conexão falhar
   });
 
@@ -28,22 +29,22 @@ app.use(bodyParser.json());
 const serviceSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  description: { type: String, default: 'Sem descrição' },
+  description: { type: String, default: "Sem descrição" },
   price: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now },
   message: { type: String, required: false }, // Novo campo opcional
   serviceName: { type: String, required: false }, // Novo campo opcional
 });
 
-const ServiceRequest = mongoose.model('ServiceRequest', serviceSchema);
+const ServiceRequest = mongoose.model("ServiceRequest", serviceSchema);
 
 // Rotas para Serviços
-app.post('/services', async (req, res) => {
+app.post("/services", async (req, res) => {
   const { name, email, description, price, message, serviceName } = req.body;
   if (!name || !email || !price) {
     return res
       .status(400)
-      .json({ message: 'Campos obrigatórios estão faltando' });
+      .json({ message: "Campos obrigatórios estão faltando" });
   }
 
   const newService = new ServiceRequest({
@@ -59,53 +60,63 @@ app.post('/services', async (req, res) => {
     const savedService = await newService.save();
     res.status(201).json(savedService);
   } catch (err) {
-    console.error('Erro ao salvar serviço:', err);
-    res.status(500).json({ message: 'Erro ao salvar serviço', error: err.message });
+    console.error("Erro ao salvar serviço:", err);
+    res
+      .status(500)
+      .json({ message: "Erro ao salvar serviço", error: err.message });
   }
 });
 
 // Listar serviços
-app.get('/services', async (_req, res) => {
+app.get("/services", async (_req, res) => {
   try {
     const services = await ServiceRequest.find();
     res.json(services);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar serviços', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar serviços", error: err.message });
   }
 });
 
 // Atualizar serviço
-app.put('/services/:id', async (req, res) => {
+app.put("/services/:id", async (req, res) => {
   const { id } = req.params;
   const updatedService = req.body;
 
   try {
-    const result = await ServiceRequest.findByIdAndUpdate(id, updatedService, { new: true });
+    const result = await ServiceRequest.findByIdAndUpdate(id, updatedService, {
+      new: true,
+    });
     if (!result) {
-      return res.status(404).json({ message: 'Serviço não encontrado' });
+      return res.status(404).json({ message: "Serviço não encontrado" });
     }
     res.json(result);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao atualizar serviço', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao atualizar serviço", error: err.message });
   }
 });
 
 // Deletar serviço
-app.delete('/services/:id', async (req, res) => {
+app.delete("/services/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
     const result = await ServiceRequest.findByIdAndDelete(id);
     if (!result) {
-      return res.status(404).json({ message: 'Serviço não encontrado' });
+      return res.status(404).json({ message: "Serviço não encontrado" });
     }
-    res.json({ message: 'Serviço deletado com sucesso' });
+    res.json({ message: "Serviço deletado com sucesso" });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao deletar serviço', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao deletar serviço", error: err.message });
   }
 });
 
-// Exportar como função serverless
-export default (req, res) => {
-  app(req, res);
-};
+// Iniciar o servidor
+app.listen(port, () => {
+  console.log(`Servidor backend rodando na porta ${port}`);
+});

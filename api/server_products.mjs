@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import multer from 'multer';
+import multer from "multer";
 import fs from 'fs'; 
 import dotenv from 'dotenv';
 
@@ -11,7 +11,7 @@ dotenv.config();
 // Configuração do armazenamento de arquivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Note que isso pode não funcionar no Vercel
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const app = express();
+const port = 3003;
 
 // Configuração do MongoDB
 mongoose
@@ -150,7 +151,7 @@ app.delete('/produtos/:id', async (req, res) => {
     if (deletedProduct.imagem) {
       const path = `uploads/${deletedProduct.imagem.split('/')[2]}`;
       console.log(`Tentando excluir a imagem do produto: ${path}`);
-      fs.unlinkSync(path); // Isto pode não funcionar no Vercel
+      fs.unlinkSync(path);
     }
 
     return res.status(200).json({ message: 'Produto excluído com sucesso' });
@@ -161,7 +162,7 @@ app.delete('/produtos/:id', async (req, res) => {
   }
 });
 
-// Exportar como função serverless
-export default (req, res) => {
-  app(req, res);
-};
+// Iniciar o servidor
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
+});

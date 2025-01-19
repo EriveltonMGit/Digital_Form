@@ -34,7 +34,7 @@ export default function App() {
         <Route path="/productList" element={<ProductList />} />
         <Route path="/brandList" element={<BrandList />} />
         <Route path="/techcatalog" element={<TechServiceCatalog />} />
-        <Route path="/servicerequesttable" element={<ServiceRequestTable serviceRequests={[]} />} />
+        <Route path="/servicerequesttable" element={<ServiceRequestTable />} />
         {/* Adicione outras rotas conforme necessário */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

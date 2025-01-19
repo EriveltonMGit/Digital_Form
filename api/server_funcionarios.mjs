@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const app = express();
+const port = 3004;
 
 // Configuração do MongoDB
 mongoose
@@ -81,6 +82,7 @@ app.put('/funcionarios/:id', async (req, res) => {
   }
 });
 
+
 // Deletar funcionário
 app.delete('/funcionarios/:id', async (req, res) => {
   const { id } = req.params;
@@ -92,7 +94,7 @@ app.delete('/funcionarios/:id', async (req, res) => {
   }
 });
 
-// Exportar como função serverless
-export default (req, res) => {
-  app(req, res);
-};
+// Iniciar o servidor
+app.listen(port, () => {
+  console.log(`Servidor backend rodando na porta ${port}`);
+});
