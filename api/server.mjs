@@ -10,11 +10,11 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Conexão com o MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // 30 segundos de timeout
+})
   .then(() => console.log('MongoDB conectado com sucesso!'))
   .catch((err) => {
     console.error('Erro ao conectar com o MongoDB:', err.message);
