@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"node ./api/server.mjs\" \"node ./api/server_fornecedores.mjs\" \"node ./api/server_products.mjs\" \"node ./api/server_funcionarios.mjs\" \"node ./api/server_catologServices.mjs\"",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+  "build": "tsc -b && vite build",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "start": "node ./api/server.mjs"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
