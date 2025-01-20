@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setClientsData, updateClient } from "../../../../redux/clientsSlice";
+import { setClientsData, updateClient, deleteClient } from "../../../../redux/clientsSlice";
 import axios from "axios";
 import { FaSearch, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
@@ -11,9 +11,10 @@ import DeleteClient from "../ListClients_2/DeleteClient/DeleteClient";
 import React from "react";
 
 // Definindo a URL base para a API
-const baseURL = "https://clientes-production-df47.up.railway.app/clientes"; // URL da API de produção
+const baseURL = "https://clientes-production-df47.up.railway.app"; // URL da API de produção
 
 export interface Client {
+  _id: any;
   id: string;
   nome: string;
   tipo: string;
@@ -39,19 +40,30 @@ function ListClients_2() {
     const fetchClients = async () => {
       try {
         const response = await axios.get(`${baseURL}/clientes`);
-        dispatch(setClientsData(response.data));
+        dispatch(setClientsData(response.data)); // Armazena os clientes no Redux
       } catch (err) {
-        console.error(err); // Usando o 'err' para logar o erro
+        console.error(err);
         message.error("Erro ao carregar os dados.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchClients();
   }, [dispatch]);
 
-  // Função de atualização do cliente
+  // Função para manipular a exclusão de um cliente
+  const handleDeleteClient = async (clientId: string) => {
+    try {
+      await axios.delete(`${baseURL}/clientes/${clientId}`); // Deletar cliente do banco de dados
+      dispatch(deleteClient(clientId)); // Remover o cliente do estado Redux
+      message.success("Cliente excluído com sucesso!");
+    } catch (err) {
+      console.error("Erro ao excluir cliente:", err);
+      message.error("Erro ao excluir cliente.");
+    }
+  };
+
+  // Função para editar cliente
   const handleUpdateClient = async (updatedClient: Client) => {
     setLoading(true);
     try {
@@ -64,25 +76,13 @@ function ListClients_2() {
       message.success("Cliente atualizado com sucesso!");
     } catch (err) {
       console.error(err);
-      if (axios.isAxiosError(err)) {
-        message.error(
-          `Erro ao atualizar cliente: ${
-            err.response?.data?.message || "Erro desconhecido"
-          }`
-        );
-      } else {
-        message.error("Erro desconhecido!");
-      }
+      message.error("Erro ao atualizar cliente!");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeleteButtonClick = (client: Client) => {
-    setClientToDelete(client);
-  };
-
-  // Função para lidar com a busca
+  // Função para a busca de clientes
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
   };
@@ -110,19 +110,21 @@ function ListClients_2() {
             />
           )}
 
-          <DeleteClient
-            clientId={clientToDelete?.id || null}
+          {clientToDelete && (
+            <DeleteClient
+            clientId={clientToDelete.id}
             onClose={() => setClientToDelete(null)}
+            onDelete={handleDeleteClient} // Passando a função handleDeleteClient como onDelete
           />
+          )}
 
-          {/* Campo de busca com o Input do Ant Design */}
           <div className="search_container_input">
             <Input
               placeholder="Buscar cliente..."
               value={searchTerm}
               onChange={handleSearchChange}
               className="search_input"
-              prefix={<FaSearch />} // Usando ícone de busca
+              prefix={<FaSearch />}
             />
           </div>
 
@@ -147,11 +149,7 @@ function ListClients_2() {
                     client.id || `${index}-${client.nome}-${client.email}`;
                   return (
                     <tr key={clientKey}>
-                      <td>
-                        {client.id ? client.id.slice(0, 6) : "Carregando..."}{" "}
-                        {/* Exibe "Carregando..." enquanto o ID não estiver disponível */}
-                      </td>
-
+                      <td>{client._id ? client._id.slice(0, 6) : "Carregando..."}</td>
                       <td>{client.nome}</td>
                       <td>{client.tipo}</td>
                       <td>
@@ -161,28 +159,20 @@ function ListClients_2() {
                       <td>{client.celular}</td>
                       <td>{client.email}</td>
                       <td>
-                        {new Date(client.cadastradoEm).toLocaleDateString(
-                          "pt-BR"
-                        )}
+                        {new Date(client.cadastradoEm).toLocaleDateString("pt-BR")}
                       </td>
                       <td className="action_btn">
+                        {/* Botão de Editar */}
                         <button
-                          className="action_button search_button"
-                          title="Visualizar cliente"
-                        >
-                          <FaSearch />
-                        </button>
-                        <button
-                          className="action_button edit_button"
+                          className="edit_btn"
                           onClick={() => setEditingClient(client)}
-                          title="Editar cliente"
                         >
                           <FaEdit />
                         </button>
+                        {/* Botão de Deletar */}
                         <button
-                          className="action_button delete_button"
-                          onClick={() => handleDeleteButtonClick(client)}
-                          title="Excluir cliente"
+                          className="delete_btn"
+                          onClick={() => setClientToDelete(client)}
                         >
                           <FaTrashAlt />
                         </button>
@@ -192,7 +182,7 @@ function ListClients_2() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={9}>Nenhum cliente encontrado</td>
+                  <td colSpan={9}>Nenhum cliente encontrado.</td>
                 </tr>
               )}
             </tbody>

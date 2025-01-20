@@ -7,7 +7,8 @@
     "dev": "concurrently \"vite\" \"node ./api/server.mjs\" \"node ./api/server_fornecedores.mjs\" \"node ./api/server_products.mjs\" \"node ./api/server_funcionarios.mjs\" \"node ./api/server_catologServices.mjs\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "proxy": "https://clientes-production-df47.up.railway.app"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",

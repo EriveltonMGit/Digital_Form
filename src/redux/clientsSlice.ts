@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Client {
-  id: string; // Alterado de 'codigo' para 'id'
+  id: string;
   nome: string;
   tipo: string;
   situacao: string;
@@ -23,27 +23,40 @@ const clientsSlice = createSlice({
   name: 'clients',
   initialState,
   reducers: {
+    // Definir todos os dados de clientes
     setClientsData(state, action: PayloadAction<Client[]>) {
       state.clientsData = action.payload;
     },
-    addClient: (state, action: PayloadAction<Client>) => {
-      state.clientsData.push(action.payload); // Garantir que a ação adicione cliente corretamente
+    // Adicionar um novo cliente
+    addClient(state, action: PayloadAction<Client>) {
+      const exists = state.clientsData.some(client => client.id === action.payload.id);
+      if (!exists) {
+        state.clientsData.push(action.payload);
+      } else {
+        console.warn(`Client with ID ${action.payload.id} already exists!`);
+      }
     },
+    // Atualizar os dados de um cliente
     updateClient(state, action: PayloadAction<Client>) {
       const index = state.clientsData.findIndex(client => client.id === action.payload.id);
-      console.log("Updating client with ID:", action.payload.id);
-      console.log("Found client index:", index);
-      
       if (index !== -1) {
-        state.clientsData[index] = action.payload;
+        state.clientsData[index] = action.payload; // Atualiza o cliente
       } else {
         console.error(`Client with ID ${action.payload.id} not found!`);
       }
-    }
-    ,
-    deleteClient(state, action: PayloadAction<string>) { // Alterado para 'string' porque 'id' agora é string
-      state.clientsData = state.clientsData.filter(client => client.id !== action.payload); // Alterado de 'codigo' para 'id'
     },
+    // Excluir um cliente
+   // Em clientsSlice
+deleteClient(state, action: PayloadAction<string>) {
+  const initialLength = state.clientsData.length;
+  state.clientsData = state.clientsData.filter(client => client.id !== action.payload);
+
+  // Verifica se o cliente foi removido da lista
+  if (state.clientsData.length === initialLength) {
+    console.error(`Cliente com ID ${action.payload} não encontrado!`);
+  }
+}
+,
   },
 });
 

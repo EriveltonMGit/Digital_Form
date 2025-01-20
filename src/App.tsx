@@ -37,6 +37,7 @@ export default function App() {
         <Route path="/servicerequesttable" element={<ServiceRequestTable />} />
         {/* Adicione outras rotas conforme necessário */}
         <Route path="*" element={<NotFoundPage />} />
+        
       </Routes>
     </Provider>
   );

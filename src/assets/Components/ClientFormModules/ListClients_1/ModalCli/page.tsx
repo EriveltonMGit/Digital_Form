@@ -37,6 +37,7 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
       // Enviando os dados para o backend
       // const response = await axios.post("http://localhost:3001/clientes", values);
       const response = await axios.post("https://clientes-production-df47.up.railway.app/clientes", values);
+
       
       if (response.status === 201) {
         notification.success({

@@ -12,10 +12,10 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: isProduction
-            ? 'https://clientes-production-df47.up.railway.app/'
-            : 'http://localhost:3001', // API de desenvolvimento
+            ? 'https://clientes-production-df47.up.railway.app/'  // API de Produção
+            : 'http://localhost:3001', // API de Desenvolvimento
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/api/, ''),  // Reescreve o caminho
         },
       },
     },
@@ -32,3 +32,4 @@ export default defineConfig(({ mode }) => {
     },
   };
 });
+

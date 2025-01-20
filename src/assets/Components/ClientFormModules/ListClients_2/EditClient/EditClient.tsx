@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { Client } from '../../ListClients_2/page';
 import axios from 'axios';
-import { message, Input, Button } from 'antd'; // Importando Input e Button do Ant Design
+import { message, Input, Button, Spin } from 'antd'; // Importando Input, Button e Spin do Ant Design
 import './EditClient.css';
 import React from 'react';
 
@@ -33,8 +33,6 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editedClient) {
-      // console.log("Client to be updated:", editedClient);
-  
       if (!editedClient.id) {
         message.error('ID do cliente não encontrado');
         return;
@@ -46,17 +44,15 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
         onSave(editedClient); // Atualiza o Redux com o cliente editado
         setHasSaved(true);
         onClose();
-      } catch (error) {
+        message.success('Cliente atualizado com sucesso!');
+      } catch (error: any) {
         console.error('Erro ao atualizar cliente:', error);
-        message.error('Erro ao atualizar cliente!');
+        message.error(`Erro ao atualizar cliente: ${error.response?.data?.message || 'Erro desconhecido'}`);
       } finally {
         setLoading(false);
       }
     }
   };
-  
-  
-  
 
   if (!editedClient) return null;
 
@@ -98,21 +94,23 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
               onChange={handleInputChange}
             />
           </div>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className='btn_edit'
-            disabled={loading}
-            style={{ marginRight: '10px' }}
-          >
-            {loading ? 'Salvando...' : 'Salvar alterações'}
-          </Button>
-          <Button
-            type="default"
-            onClick={onClose}
-          >
-            Cancelar
-          </Button>
+          <div>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className='btn_edit'
+              disabled={loading}
+              style={{ marginRight: '10px' }}
+            >
+              {loading ? <Spin size="small" /> : 'Salvar alterações'}
+            </Button>
+            <Button
+              type="default"
+              onClick={onClose}
+            >
+              Cancelar
+            </Button>
+          </div>
         </form>
       </div>
     </div>
