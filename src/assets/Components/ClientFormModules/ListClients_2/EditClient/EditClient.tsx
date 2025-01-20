@@ -1,10 +1,22 @@
 import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { Client } from '../../ListClients_2/page';
-import axios from 'axios';
-import { message, Input, Button, Spin } from 'antd'; // Importando Input, Button e Spin do Ant Design
+import { message, Input, Button, Spin } from 'antd';
 import './EditClient.css';
 import React from 'react';
+import axios from 'axios';
+const baseURL = "https://clientes-production-df47.up.railway.app"; 
+// Em ambos os arquivos, modifique a definição da interface Client
+interface Client {
+  _id: string;
+  id: string;  // Certifique-se de que id é obrigatório aqui
+  nome: string;
+  tipo: string;
+  situacao: string;
+  telefone: string;
+  celular: string;
+  email: string;
+  cadastradoEm: string;
+}
 
 interface EditClientProps {
   client: Client | null;
@@ -14,8 +26,7 @@ interface EditClientProps {
 
 const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
   const [editedClient, setEditedClient] = useState<Client | null>(null);
-  const [loading, setLoading] = useState(false);  // Estado de carregamento
-  const [, setHasSaved] = useState(false); // Flag para controlar a exibição da mensagem
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (client) {
@@ -32,27 +43,44 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editedClient) {
-      if (!editedClient.id) {
-        message.error('ID do cliente não encontrado');
-        return;
-      }
-  
+    if (editedClient && editedClient._id) {
       setLoading(true);
       try {
-        await axios.put(`https://clientes-production-df47.up.railway.app/clientes/${editedClient.id}`, editedClient);
-        onSave(editedClient); // Atualiza o Redux com o cliente editado
-        setHasSaved(true);
+        if (!editedClient.email || !editedClient.nome) {
+          message.error("Nome e E-mail são obrigatórios!");
+          return;
+        }
+  
+        // Verifique o payload
+        const updatedClient = {
+          nome: editedClient.nome,
+          email: editedClient.email,
+          telefone: editedClient.telefone,
+          celular: editedClient.celular,
+          situacao: editedClient.situacao,
+          idade: 45 // Se for necessário, adicione o campo de idade
+        };
+  
+        const response = await axios.put(
+          `https://clientes-production-df47.up.railway.app/clientes/${editedClient._id}`,
+          updatedClient,
+          { headers: { "Content-Type": "application/json" } }
+        );
+  
+        onSave(response.data.client);
+        // message.success("Cliente atualizado com sucesso!");
         onClose();
-        message.success('Cliente atualizado com sucesso!');
       } catch (error: any) {
-        console.error('Erro ao atualizar cliente:', error);
-        message.error(`Erro ao atualizar cliente: ${error.response?.data?.message || 'Erro desconhecido'}`);
+        console.error("Erro ao atualizar cliente:", error);
+        message.error(error.response?.data?.message || "Erro ao atualizar cliente!");
       } finally {
         setLoading(false);
       }
+    } else {
+      message.error("Dados do cliente ou ID inválido!");
     }
   };
+  
 
   if (!editedClient) return null;
 
@@ -98,16 +126,13 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
             <Button
               type="primary"
               htmlType="submit"
-              className='btn_edit'
+              className="btn_edit"
               disabled={loading}
               style={{ marginRight: '10px' }}
             >
               {loading ? <Spin size="small" /> : 'Salvar alterações'}
             </Button>
-            <Button
-              type="default"
-              onClick={onClose}
-            >
+            <Button type="default" onClick={onClose}>
               Cancelar
             </Button>
           </div>
@@ -116,5 +141,6 @@ const EditClient: React.FC<EditClientProps> = ({ client, onClose, onSave }) => {
     </div>
   );
 };
+
 
 export default EditClient;

@@ -10,12 +10,11 @@ import EditClient from "../ListClients_2/EditClient/EditClient";
 import DeleteClient from "../ListClients_2/DeleteClient/DeleteClient";
 import React from "react";
 
-// Definindo a URL base para a API
 const baseURL = "https://clientes-production-df47.up.railway.app"; // URL da API de produção
 
 export interface Client {
-  _id: any;
-  id: string;
+  _id: string;
+  id: string;  // Agora o 'id' é obrigatório
   nome: string;
   tipo: string;
   situacao: string;
@@ -23,9 +22,7 @@ export interface Client {
   celular: string;
   email: string;
   cadastradoEm: string;
-  anexo?: string; // URL do anexo
 }
-
 function ListClients_2() {
   const dispatch = useDispatch();
   const clientsData = useSelector(
@@ -38,62 +35,83 @@ function ListClients_2() {
 
   useEffect(() => {
     const fetchClients = async () => {
-      try {
-        const response = await axios.get(`${baseURL}/clientes`);
-        dispatch(setClientsData(response.data)); // Armazena os clientes no Redux
-      } catch (err) {
-        console.error(err);
-        message.error("Erro ao carregar os dados.");
-      } finally {
-        setLoading(false);
+      if (loading) {
+        try {
+          const response = await axios.get(`${baseURL}/clientes`);
+          dispatch(setClientsData(response.data)); // Atualiza os dados no Redux
+        } catch (err: any) {
+          if (err.response && err.response.status === 429) {
+            const retryAfter = err.response.headers['retry-after'] || 5;
+            message.error(`Muitas requisições. Tente novamente em ${retryAfter} segundos.`);
+            setTimeout(fetchClients, retryAfter * 1000);
+          } else {
+            console.error("Erro ao carregar os dados:", err);
+            message.error("Erro ao carregar os dados.");
+          }
+        } finally {
+          setLoading(false);
+        }
       }
     };
-    fetchClients();
-  }, [dispatch]);
 
-  // Função para manipular a exclusão de um cliente
+    fetchClients();
+  }, [dispatch, loading]);
+
   const handleDeleteClient = async (clientId: string) => {
+    setLoading(true);
     try {
-      await axios.delete(`${baseURL}/clientes/${clientId}`); // Deletar cliente do banco de dados
-      dispatch(deleteClient(clientId)); // Remover o cliente do estado Redux
-      message.success("Cliente excluído com sucesso!");
+      const response = await axios.delete(`${baseURL}/clientes/${clientId}`);
+      if (response.status === 200) {
+        dispatch(deleteClient(clientId)); // Remova do Redux após sucesso
+        message.success("Cliente excluído com sucesso!");
+      } else {
+        message.error("Erro ao excluir cliente no servidor.");
+      }
     } catch (err) {
       console.error("Erro ao excluir cliente:", err);
       message.error("Erro ao excluir cliente.");
-    }
-  };
-
-  // Função para editar cliente
-  const handleUpdateClient = async (updatedClient: Client) => {
-    setLoading(true);
-    try {
-      await axios.put(
-        `${baseURL}/clientes/${updatedClient.id}`, // Corrigindo a URL para produção
-        updatedClient // Dados que você quer atualizar
-      );
-      dispatch(updateClient(updatedClient)); // Atualiza os dados no Redux
-      setEditingClient(null); // Fecha a janela de edição
-      message.success("Cliente atualizado com sucesso!");
-    } catch (err) {
-      console.error(err);
-      message.error("Erro ao atualizar cliente!");
     } finally {
       setLoading(false);
     }
   };
 
-  // Função para a busca de clientes
+  // Função para atualizar o cliente
+  const handleUpdateClient = async (updatedClient: Client) => {
+  setLoading(true);
+  try {
+    const response = await axios.put(
+      `https://clientes-production-df47.up.railway.app/clientes/${updatedClient._id}`, // Use updatedClient._id aqui
+      updatedClient,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    if (response.status === 200 && response.data) {
+      dispatch(updateClient(response.data.client)); // Envia o cliente atualizado para o Redux
+      setEditingClient(null);
+      message.success("Cliente atualizado com sucesso!");
+    } else {
+      message.error(`Erro ao atualizar cliente: ${response.statusText}`);
+    }
+  } catch (err) {
+    console.error("Erro ao atualizar cliente:", err);
+    message.error("Erro ao atualizar cliente!");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+    setSearchTerm(e.target.value);
   };
 
-  // Filtrando os clientes conforme o termo de busca
   const filteredClients = clientsData.filter(
     (client) =>
-      client.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.telefone.includes(searchTerm) ||
-      client.celular.includes(searchTerm)
+      (client.nome && client.nome.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.telefone && client.telefone.includes(searchTerm)) ||
+      (client.celular && client.celular.includes(searchTerm))
   );
 
   return (
@@ -112,10 +130,10 @@ function ListClients_2() {
 
           {clientToDelete && (
             <DeleteClient
-            clientId={clientToDelete.id}
-            onClose={() => setClientToDelete(null)}
-            onDelete={handleDeleteClient} // Passando a função handleDeleteClient como onDelete
-          />
+              clientId={clientToDelete._id}
+              onClose={() => setClientToDelete(null)}
+              onDelete={handleDeleteClient}
+            />
           )}
 
           <div className="search_container_input">
@@ -144,42 +162,32 @@ function ListClients_2() {
             </thead>
             <tbody>
               {filteredClients.length > 0 ? (
-                filteredClients.map((client: Client, index: number) => {
-                  const clientKey =
-                    client.id || `${index}-${client.nome}-${client.email}`;
-                  return (
-                    <tr key={clientKey}>
-                      <td>{client._id ? client._id.slice(0, 6) : "Carregando..."}</td>
-                      <td>{client.nome}</td>
-                      <td>{client.tipo}</td>
-                      <td>
-                        {client.situacao === "ativo" ? <FaCheck /> : "Inativo"}
-                      </td>
-                      <td>{client.telefone}</td>
-                      <td>{client.celular}</td>
-                      <td>{client.email}</td>
-                      <td>
-                        {new Date(client.cadastradoEm).toLocaleDateString("pt-BR")}
-                      </td>
-                      <td className="action_btn">
-                        {/* Botão de Editar */}
-                        <button
-                          className="edit_btn"
-                          onClick={() => setEditingClient(client)}
-                        >
-                          <FaEdit />
-                        </button>
-                        {/* Botão de Deletar */}
-                        <button
-                          className="delete_btn"
-                          onClick={() => setClientToDelete(client)}
-                        >
-                          <FaTrashAlt />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
+                filteredClients.map((client) => (
+                  <tr key={client._id}>
+                    <td>{client._id.slice(0, 30)}</td>
+                    <td>{client.nome}</td>
+                    <td>{client.tipo}</td>
+                    <td>{client.situacao === "ativo" ? <FaCheck /> : "Inativo"}</td>
+                    <td>{client.telefone}</td>
+                    <td>{client.celular}</td>
+                    <td>{client.email}</td>
+                    <td>{new Date(client.cadastradoEm).toLocaleDateString("pt-BR")}</td>
+                    <td className="action_btn">
+                      <button
+                        className="edit_btn"
+                        onClick={() => setEditingClient(client)}
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="delete_btn"
+                        onClick={() => setClientToDelete(client)}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
+                  </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan={9}>Nenhum cliente encontrado.</td>

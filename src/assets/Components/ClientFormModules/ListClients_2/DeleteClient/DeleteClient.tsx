@@ -5,7 +5,7 @@ import axios from "axios";
 import { deleteClient } from "../../../../../redux/clientsSlice";
 import "./DeleteClient.css";
 import React from "react";
-
+const baseURL = "https://clientes-production-df47.up.railway.app"; 
 interface DeleteClientProps {
   clientId: string | null;
   onClose: () => void;
@@ -18,21 +18,15 @@ const DeleteClient: React.FC<DeleteClientProps> = ({ clientId, onClose, }) => {
   const [loading, setLoading] = useState(false);
 
   const handleConfirmDelete = async () => {
-    console.log("Iniciando exclusão de cliente...");
-    
     if (password === "admin") {
       setLoading(true);
       try {
         if (clientId) {
-          console.log(`Tentando excluir cliente com ID ${clientId}`);
-          
-          const response = await axios.delete(
-            `https://clientes-production-df47.up.railway.app/clientes/${clientId}`
-          );
-          console.log("Resposta da exclusão:", response);
+          // Atualiza Redux antes da requisição
+          dispatch(deleteClient(clientId));
   
+          const response = await axios.delete(`${baseURL}/clientes/${clientId}`);
           if (response.status === 200) {
-            dispatch(deleteClient(clientId)); // Atualiza a lista de clientes no Redux
             message.success("Cliente excluído com sucesso!");
           } else {
             message.error("Falha ao excluir cliente no servidor!");
@@ -50,6 +44,7 @@ const DeleteClient: React.FC<DeleteClientProps> = ({ clientId, onClose, }) => {
       message.error("Senha incorreta!");
     }
   };
+  
 
   return (
     <Modal

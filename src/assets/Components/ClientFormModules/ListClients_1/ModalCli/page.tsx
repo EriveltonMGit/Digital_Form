@@ -1,4 +1,3 @@
-
 import { Modal, Form, Input, Select, notification, DatePicker } from "antd";
 import "./ModalCli.css";
 import Address from "../Address/page";
@@ -7,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addClient } from "../../../../../redux/clientsSlice";
 import FileUpload from "../FileUpload/page";
 import React from "react";
+import moment from "moment"; // Não se esqueça de importar o moment
 
 interface FormValues {
   codigo: string;
@@ -33,31 +33,47 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
 
   const handleFormSubmit = async (values: FormValues) => {
     try {
-      await form.validateFields();  
-      // Enviando os dados para o backend
-      // const response = await axios.post("http://localhost:3001/clientes", values);
-      const response = await axios.post("https://clientes-production-df47.up.railway.app/clientes", values);
-
-      
+      await form.validateFields();
+      const clientData = {
+        nome: values.nome,
+        tipo: values.tipo || "",
+        situacao: values.situacao || "",
+        telefone: values.telefone || "",
+        celular: values.celular || "",
+        email: values.email,
+        cadastradoEm: moment(values.cadastradoEm).toISOString(),
+        idade: values.idade || 0,
+        fax: values.fax || "",
+      };
+  
+      const response = await axios.post(
+        "https://clientes-production-df47.up.railway.app/clientes",
+        clientData
+      );
+  
       if (response.status === 201) {
+        // Adicionando o cliente ao Redux após a resposta
+        dispatch(addClient(response.data)); 
+  
         notification.success({
           message: "Cadastro realizado com sucesso!",
           description: "Os dados do cliente foram cadastrados com sucesso no sistema.",
           placement: "topRight",
         });
-        dispatch(addClient(response.data)); // Adicionando cliente ao Redux
-        onFinish(values);  // Fechar o modal ou realizar outras ações
-        form.resetFields();  // Limpar os campos
+  
+        onFinish(values); // Atualiza UI
+        form.resetFields();
+        handleCancel(); // Fecha o modal
       }
-    } catch (error) {
-      console.error("Erro na validação ou no envio dos dados:", error);
+    } catch (error: any) {
+      console.error("Erro ao cadastrar cliente:", error);
       notification.error({
-        message: "Erro no cadastro",
-        description: "Ocorreu um erro ao tentar cadastrar os dados do cliente.",
-        placement: "topRight",
+        message: "Erro ao cadastrar cliente!",
+        description: "Por favor, tente novamente mais tarde.",
       });
     }
   };
+  
   
   
 
@@ -81,10 +97,13 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             name="tipo"
             label="Tipo :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor selecione o tipo!" }]} >
+            rules={[{ required: true, message: "Por favor selecione o tipo!" }]}
+          >
             <Select placeholder="Selecione o tipo">
               <Select.Option value="pessoa_fisica">Pessoa Física</Select.Option>
-              <Select.Option value="pessoa_juridica">Pessoa Jurídica</Select.Option>
+              <Select.Option value="pessoa_juridica">
+                Pessoa Jurídica
+              </Select.Option>
               <Select.Option value="estrangeiro">Estrangeiro</Select.Option>
             </Select>
           </Form.Item>
@@ -93,7 +112,8 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             name="nome"
             label="Nome :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor insira o nome!" }]} >
+            rules={[{ required: true, message: "Por favor insira o nome!" }]}
+          >
             <Input placeholder="Informe o nome completo" />
           </Form.Item>
 
@@ -101,18 +121,17 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             name="situacao"
             label="Situação :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor selecione a situação!" }]} >
+            rules={[
+              { required: true, message: "Por favor selecione a situação!" },
+            ]}
+          >
             <Select placeholder="Selecione a situação">
               <Select.Option value="ativo">Ativo</Select.Option>
               <Select.Option value="inativo">Inativo</Select.Option>
             </Select>
           </Form.Item>
 
-          <Form.Item
-            name="fax"
-            label="Fax:"
-            className="form-col"
-          >
+          <Form.Item name="fax" label="Fax:" className="form-col">
             <Input placeholder="Informe o fax" />
           </Form.Item>
         </div>
@@ -122,7 +141,13 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             name="telefone"
             label="Telefone Comercial :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor insira o telefone comercial!" }]} >
+            rules={[
+              {
+                required: true,
+                message: "Por favor insira o telefone comercial!",
+              },
+            ]}
+          >
             <Input placeholder="Informe o telefone comercial" />
           </Form.Item>
 
@@ -130,7 +155,8 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             name="celular"
             label="Celular :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor insira o celular!" }]} >
+            rules={[{ required: true, message: "Por favor insira o celular!" }]}
+          >
             <Input placeholder="Informe o celular" />
           </Form.Item>
 
@@ -141,7 +167,8 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             rules={[
               { required: true, message: "Por favor insira o e-mail!" },
               { type: "email", message: "O e-mail inserido não é válido!" },
-            ]} >
+            ]}
+          >
             <Input placeholder="Informe o e-mail" />
           </Form.Item>
 
@@ -149,15 +176,26 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
             name="cadastradoEm"
             label="Data de cadastro do cliente :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor insira a data de cadastro!" }]} >
-            <DatePicker format="DD/MM/YYYY" placeholder="DD/MM/YYYY" style={{ width: "100%" }} />
+            rules={[
+              {
+                required: true,
+                message: "Por favor insira a data de cadastro!",
+              },
+            ]}
+          >
+            <DatePicker
+              format="DD/MM/YYYY"
+              placeholder="DD/MM/YYYY"
+              style={{ width: "100%" }}
+            />
           </Form.Item>
 
           <Form.Item
             name="idade"
             label="Idade :"
             className="form-col"
-            rules={[{ required: true, message: "Por favor insira a idade!" }]} >
+            rules={[{ required: true, message: "Por favor insira a idade!" }]}
+          >
             <Input placeholder="Informe a idade" />
           </Form.Item>
         </div>
@@ -165,11 +203,15 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
         <Address form={form} />
 
         <Form.Item name="anexo" label="Anexo" className="upload">
-          <FileUpload onFileChange={(file) => form.setFieldsValue({ anexo: file })} />
+          <FileUpload
+            onFileChange={(file) => form.setFieldsValue({ anexo: file })}
+          />
         </Form.Item>
 
         <Form.Item>
-          <button type="submit" className="ant-btn ant-btn-primary">Cadastrar</button>
+          <button type="submit" className="ant-btn ant-btn-primary">
+            Cadastrar
+          </button>
         </Form.Item>
       </Form>
     </Modal>
