@@ -103,24 +103,25 @@ width: 80%;
   }
 }
 /*  .edit_button */
-.edit_button {
+.edit_btn {
   padding: 0.3rem;
   color: white;
   background-color: var(--orange);
   border-radius: 5px;
   font-size: 13px;
+  
 }
-.edit_button:hover {
+.edit_btn:hover {
   background-color: #e06907;
 }
 /* delete_button */
-.delete_button {
+.delete_btn {
   padding: 0.3rem;
   color: white;
   background-color: red;
   border-radius: 5px;
   font-size: 13px;
 }
-.delete_button:hover {
+.delete_btn:hover {
   background-color: var(--danger);
 }

@@ -39,7 +39,7 @@ const EditSupplierModal: React.FC<EditSupplierModalProps> = ({
       setLoading(true);
 
       const response = await fetch(
-        `http://localhost:3002/fornecedores/${supplier.id}`,
+        `https://beckfornecedores-production.up.railway.app/fornecedores/${supplier.id}`,
         {
           method: "PUT",
           headers: {

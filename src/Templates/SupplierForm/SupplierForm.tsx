@@ -25,45 +25,32 @@ const SupplierForm: React.FC = () => {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-
-    // Verifique se todos os campos obrigatórios estão preenchidos antes de enviar
-    const requiredFields = [
-      "nome",
-      "cnpj",
-      "telefone",
-      "email",
-      "endereco",
-      "numero",
-      "bairro",
-      "cidade",
-      "estado",
-    ];
-    const missingFields = requiredFields.filter((field) => !values[field]);
-
-    if (missingFields.length > 0) {
-      message.error(
-        `Campos obrigatórios não preenchidos: ${missingFields.join(", ")}`
-      );
-      setLoading(false);
-      return;
-    }
-
+  
+    const formattedDataCadastro = values.dataCadastro
+      ? values.dataCadastro.format("YYYY-MM-DD")
+      : null;
+  
+    const supplierData = {
+      ...values,
+      dataCadastro: formattedDataCadastro || new Date().toISOString(),
+    };
+  
     try {
-      // Enviar os dados para o backend
-      const response = await fetch("http://localhost:3002/fornecedores", {
+      const response = await fetch("https://beckfornecedores-production.up.railway.app/fornecedores", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(supplierData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         message.success("Fornecedor cadastrado com sucesso!");
         form.resetFields(); // Limpa o formulário após sucesso
       } else {
+        // Exibe a mensagem específica de erro retornada do backend
         message.error(data.message || "Erro ao cadastrar o fornecedor.");
       }
     } catch (error) {
@@ -73,6 +60,7 @@ const SupplierForm: React.FC = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <section className="container_supplier">
@@ -83,7 +71,7 @@ const SupplierForm: React.FC = () => {
         breadcrumbs={[
           { label: "Clientes", icon: <FaHouseUser />, link: "/clients" },
           {
-            label: "Lista de Forne...",
+            label: "Lista de Fornecedores",
             icon: <CiViewTable />,
             link: "/listsuppliers",
           },
@@ -137,13 +125,9 @@ const SupplierForm: React.FC = () => {
               name="telefone"
               rules={[
                 { required: true, message: "Insira o telefone do fornecedor" },
-                {
-                  pattern: /^\(\d{2}\) \d{4,5}-\d{4}$/,
-                  message: "Telefone inválido. Exemplo: (11) 98765-4321",
-                },
               ]}
             >
-              <Input placeholder="Ex.: (11) 98765-4321" />
+              <Input placeholder="Ex.: 00 00000 0000" />
             </Form.Item>
           </Col>
 

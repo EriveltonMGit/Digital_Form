@@ -34,6 +34,7 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
   const handleFormSubmit = async (values: FormValues) => {
     try {
       await form.validateFields();
+
       const clientData = {
         nome: values.nome,
         tipo: values.tipo || "",
@@ -45,37 +46,53 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
         idade: values.idade || 0,
         fax: values.fax || "",
       };
-  
+
       const response = await axios.post(
         "https://clientes-production-df47.up.railway.app/clientes",
         clientData
       );
-  
+
       if (response.status === 201) {
-        // Adicionando o cliente ao Redux após a resposta
-        dispatch(addClient(response.data)); 
-  
+        dispatch(addClient(response.data)); // Adiciona o cliente ao Redux
+
         notification.success({
           message: "Cadastro realizado com sucesso!",
-          description: "Os dados do cliente foram cadastrados com sucesso no sistema.",
+          description:
+            "Os dados do cliente foram cadastrados com sucesso no sistema.",
           placement: "topRight",
         });
-  
-        onFinish(values); // Atualiza UI
+
+        onFinish(values);
         form.resetFields();
         handleCancel(); // Fecha o modal
       }
     } catch (error: any) {
       console.error("Erro ao cadastrar cliente:", error);
-      notification.error({
-        message: "Erro ao cadastrar cliente!",
-        description: "Por favor, tente novamente mais tarde.",
-      });
+
+      // Verificar se o erro é de duplicação de e-mail ou telefone
+      if (error.response && error.response.data) {
+        if (error.response.data.error === "email_duplicado") {
+          notification.error({
+            message: "E-mail já cadastrado!",
+            description: error.response.data.message,
+            placement: "topRight",
+          });
+        } else if (error.response.data.error === "telefone_duplicado") {
+          notification.error({
+            message: "Telefone já cadastrado!",
+            description: error.response.data.message,
+            placement: "topRight",
+          });
+        }
+      } else {
+        notification.error({
+          message: "Erro ao cadastrar cliente!",
+          description: "Por favor, tente novamente mais tarde.",
+          placement: "topRight",
+        });
+      }
     }
   };
-  
-  
-  
 
   return (
     <Modal

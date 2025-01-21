@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { Table, message, Input, Empty } from "antd"; // Adicionando o componente Empty do Ant Design
+import { Table, message, Input, Empty } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import moment from "moment";
+import dayjs from "dayjs"; 
 import "./SupplierListForm.css";
-import React from "react";
 import CustomHeader from "../../../Page/CustomHeader/CustomHeader";
 // IMPORT REACT ICONS
 import { IoHomeSharp, IoPeopleSharp, IoSearchSharp } from "react-icons/io5";
 import { FaBox } from "react-icons/fa";
+import React from "react";
+
+const baseURL = "https://beckfornecedores-production.up.railway.app"; // URL da API de fornecedores
+
 interface PaginationConfig {
   current: number;
   pageSize: number;
@@ -23,21 +26,21 @@ const SupplierList: React.FC = () => {
   });
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  // Função para buscar fornecedores com paginação
   const fetchSuppliers = async (page: number, pageSize: number) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3002/fornecedores?page=${page}&pageSize=${pageSize}`
+        `${baseURL}/fornecedores?page=${page}&limit=${pageSize}`
       );
       if (response.ok) {
         const data = await response.json();
-        // Remova ou comente a linha abaixo
-        if (data.data && Array.isArray(data.data)) {
-          setSuppliers(data.data); // Armazene os dados da API
+        if (data && Array.isArray(data)) {
+          setSuppliers(data); // Armazene os dados da API
           setPagination({
             current: page,
             pageSize: pageSize,
-            total: data.total,
+            total: data.length, // Ajuste conforme o formato da resposta da API
           });
         } else {
           message.error("Formato de dados inválido.");
@@ -68,6 +71,13 @@ const SupplierList: React.FC = () => {
     );
   });
 
+  // Função para formatar a data corretamente
+  const parseDate = (date: string) => {
+    const [day, month, year] = date.split("/");
+    return `${year}-${month}-${day}`;
+  };
+
+  // Definição das colunas da tabela
   const columns = [
     { title: "Nome", dataIndex: "nome", key: "nome" },
     { title: "CNPJ", dataIndex: "cnpj", key: "cnpj" },
@@ -81,7 +91,11 @@ const SupplierList: React.FC = () => {
       title: "Data de Cadastro",
       dataIndex: "dataCadastro",
       key: "dataCadastro",
-      render: (text: string) => moment(text).format("DD/MM/YYYY"),
+      render: (text: string) => {
+        // Adicionando verificação para formato "DD/MM/YYYY"
+        const parsedDate = dayjs(text, "DD/MM/YYYY", true); // 'true' faz uma verificação rigorosa
+        return parsedDate.isValid() ? parsedDate.format("DD/MM/YYYY") : "Data inválida";
+      },
     },
   ];
 
@@ -98,13 +112,13 @@ const SupplierList: React.FC = () => {
         title="Lista de Fornecedores"
         icon={<FaBox />}
         breadcrumbs={[
-          { label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
+          { label: "Home", icon: <IoHomeSharp />, link: "/home" },
           {
-            label: "Cadastro de Forne...",
+            label: "Fornecedores",
             icon: <IoPeopleSharp />,
             link: "/suppliers",
           },
-          { label: "Em breve", icon: <IoSearchSharp />, link: "" },
+          { label: "Lista", icon: <IoSearchSharp />, link: "" },
         ]}
       />
       {/* Campo de filtro com input Ant Design e lupa */}
@@ -124,8 +138,8 @@ const SupplierList: React.FC = () => {
         <Table
           className="table_list_suppliers"
           columns={columns}
-          dataSource={filteredSuppliers} // Usando a lista filtrada
-          rowKey="cnpj"
+          dataSource={filteredSuppliers}
+          rowKey={(record) => record.cnpj || record.nome + record.numero} // Combine fields as a fallback key
           loading={loading}
           pagination={{
             current: pagination.current,
@@ -133,7 +147,7 @@ const SupplierList: React.FC = () => {
             total: pagination.total,
             showSizeChanger: true,
             pageSizeOptions: ["10", "20", "50"],
-          }} // Configuração da paginação
+          }}
           onChange={handleTableChange}
           bordered
         />

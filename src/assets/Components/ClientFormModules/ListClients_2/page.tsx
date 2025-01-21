@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setClientsData, updateClient, deleteClient } from "../../../../redux/clientsSlice";
+import {
+  setClientsData,
+  updateClient,
+  deleteClient,
+} from "../../../../redux/clientsSlice";
 import axios from "axios";
 import { FaSearch, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
@@ -11,10 +15,13 @@ import DeleteClient from "../ListClients_2/DeleteClient/DeleteClient";
 import React from "react";
 
 const baseURL = "https://clientes-production-df47.up.railway.app"; // URL da API de produção
-
+const parseDate = (date: string) => {
+  const [day, month, year] = date.split("/");
+  return `${year}-${month}-${day}`;
+};
 export interface Client {
   _id: string;
-  id: string;  // Agora o 'id' é obrigatório
+  id: string; // Agora o 'id' é obrigatório
   nome: string;
   tipo: string;
   situacao: string;
@@ -41,8 +48,10 @@ function ListClients_2() {
           dispatch(setClientsData(response.data)); // Atualiza os dados no Redux
         } catch (err: any) {
           if (err.response && err.response.status === 429) {
-            const retryAfter = err.response.headers['retry-after'] || 5;
-            message.error(`Muitas requisições. Tente novamente em ${retryAfter} segundos.`);
+            const retryAfter = err.response.headers["retry-after"] || 5;
+            message.error(
+              `Muitas requisições. Tente novamente em ${retryAfter} segundos.`
+            );
             setTimeout(fetchClients, retryAfter * 1000);
           } else {
             console.error("Erro ao carregar os dados:", err);
@@ -77,30 +86,29 @@ function ListClients_2() {
 
   // Função para atualizar o cliente
   const handleUpdateClient = async (updatedClient: Client) => {
-  setLoading(true);
-  try {
-    const response = await axios.put(
-      `https://clientes-production-df47.up.railway.app/clientes/${updatedClient._id}`, // Use updatedClient._id aqui
-      updatedClient,
-      {
-        headers: { "Content-Type": "application/json" },
+    setLoading(true);
+    try {
+      const response = await axios.put(
+        `https://clientes-production-df47.up.railway.app/clientes/${updatedClient._id}`, // Use updatedClient._id aqui
+        updatedClient,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.status === 200 && response.data) {
+        dispatch(updateClient(response.data.client)); // Envia o cliente atualizado para o Redux
+        setEditingClient(null);
+        message.success("Cliente atualizado com sucesso!");
+      } else {
+        message.error(`Erro ao atualizar cliente: ${response.statusText}`);
       }
-    );
-    if (response.status === 200 && response.data) {
-      dispatch(updateClient(response.data.client)); // Envia o cliente atualizado para o Redux
-      setEditingClient(null);
-      message.success("Cliente atualizado com sucesso!");
-    } else {
-      message.error(`Erro ao atualizar cliente: ${response.statusText}`);
+    } catch (err) {
+      console.error("Erro ao atualizar cliente:", err);
+      message.error("Erro ao atualizar cliente!");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("Erro ao atualizar cliente:", err);
-    message.error("Erro ao atualizar cliente!");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -108,8 +116,10 @@ function ListClients_2() {
 
   const filteredClients = clientsData.filter(
     (client) =>
-      (client.nome && client.nome.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.nome &&
+        client.nome.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.email &&
+        client.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (client.telefone && client.telefone.includes(searchTerm)) ||
       (client.celular && client.celular.includes(searchTerm))
   );
@@ -167,11 +177,19 @@ function ListClients_2() {
                     <td>{client._id.slice(0, 30)}</td>
                     <td>{client.nome}</td>
                     <td>{client.tipo}</td>
-                    <td>{client.situacao === "ativo" ? <FaCheck /> : "Inativo"}</td>
+                    <td>
+                      {client.situacao === "ativo" ? <FaCheck /> : "Inativo"}
+                    </td>
                     <td>{client.telefone}</td>
                     <td>{client.celular}</td>
                     <td>{client.email}</td>
-                    <td>{new Date(client.cadastradoEm).toLocaleDateString("pt-BR")}</td>
+                    <td>
+                      {client.cadastradoEm
+                        ? new Date(
+                            parseDate(client.cadastradoEm)
+                          ).toLocaleDateString("pt-BR")
+                        : "Data inválida"}
+                    </td>
                     <td className="action_btn">
                       <button
                         className="edit_btn"
