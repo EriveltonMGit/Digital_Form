@@ -100,7 +100,7 @@ function ModalCli({ isModalOpen, handleCancel, onFinish }: ModalCliProps) {
       open={isModalOpen}
       onCancel={handleCancel}
       footer={null}
-      className="custom-modal"
+      className="custom-modal_cli"
     >
       <Form
         form={form}

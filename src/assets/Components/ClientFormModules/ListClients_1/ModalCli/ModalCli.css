@@ -32,7 +32,7 @@
 
 
 /* Tamanho customizado para o modal */
-.custom-modal {
+.custom-modal_cli {
   width: 95% !important;
   height: 98vh !important;
   position: fixed;
@@ -46,8 +46,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 50px;
+  padding-top: 10px;
+ 
   border-radius: 10px;
+  
 }
 .custom-modal::-webkit-scrollbar {
   display: none; 
@@ -58,7 +60,7 @@
   flex-direction: column;
   height: auto;
  overflow-y: scroll; 
- padding-top: 10px;
+ padding-top: 20vh;
  padding-bottom: 20px;
  scrollbar-width: none; 
 }

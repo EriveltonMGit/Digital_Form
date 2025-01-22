@@ -28,33 +28,39 @@ const ProductForm: React.FC = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (key === "imagem" && values.imagem?.[0]?.originFileObj) {
-          formData.append("imagem", values.imagem[0].originFileObj);
-        } else {
-          formData.append(key, values[key]);
-        }
-      });
-
-      const response = await fetch("http://localhost:3003/produtos", {
+      formData.append("nome", values.nome);
+      formData.append("descricao", values.descricao);
+      formData.append("preco", values.preco);
+      formData.append("quantidade", values.quantidade);
+      formData.append("categoria", values.categoria);
+      formData.append("marca", values.marca);
+      formData.append("imagem", values.imagem[0].originFileObj);
+      const response = await fetch("http://localhost:3002/produtos", {
         method: "POST",
         body: formData,
       });
-
+  
+      if (!response.ok) {
+        const errorText = await response.json();
+        console.error("Erro ao enviar os dados:", errorText);
+        message.error(errorText.message || "Erro ao cadastrar o produto.");
+        return;
+      }
+  
       const data = await response.json();
       if (response.ok) {
         message.success("Produto cadastrado com sucesso!");
-        dispatch(addProduct(data)); // Despacha a ação para adicionar o produto ao Redux
+        dispatch(addProduct(data)); // Adicionar o produto ao Redux
         form.resetFields();
-      } else {
-        message.error(data.message || "Erro ao cadastrar o produto.");
       }
     } catch (error) {
+      console.error("Erro ao enviar os dados:", error);
       message.error("Erro ao cadastrar o produto.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <section className="container_products">
@@ -64,7 +70,7 @@ const ProductForm: React.FC = () => {
         breadcrumbs={[
           { label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
           {
-            label: "Lista de Produ...",
+            label: "Lista de Produtos",
             icon: <IoPeopleSharp />,
             link: "/productList",
           },
@@ -253,7 +259,22 @@ const ProductForm: React.FC = () => {
             <Upload
               name="file"
               listType="picture-card"
-              beforeUpload={() => false}
+              beforeUpload={(file) => {
+                const isImage = file.type.startsWith("image/");
+                if (!isImage) {
+                  message.error("Você só pode carregar imagens!");
+                  return false; // Impede o upload
+                }
+
+                const isLt2M = file.size / 1024 / 1024 < 2; // Limite de 2MB
+                if (!isLt2M) {
+                  message.error("A imagem deve ser menor que 2MB!");
+                  return false; // Impede o upload
+                }
+
+                return true; // Permite o upload
+              }}
+              action="http://localhost:3002/upload" // Altere para o seu servidor local
             >
               <div>
                 <UploadOutlined />

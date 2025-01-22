@@ -19,3 +19,61 @@
     right: 0;
     background-color: var( --light);
 }
+
+.not-found-content {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    animation: fadeIn 1s ease-out;
+    position: relative;
+  }
+  
+  .not-found-title {
+    font-size: 120px;
+    font-weight: bold;
+    color: #ff4d4f; /* Cor para o título */
+    margin-bottom: 20px;
+  }
+  
+  .not-found-subtitle {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .not-found-description {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+  }
+  
+  .back-home-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    border: none;
+  }
+  
+  .back-home-button:hover {
+    background-color: #e94342;
+    border-color: #e94342;
+    transform: translateY(-2px);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

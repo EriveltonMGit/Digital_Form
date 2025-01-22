@@ -1,5 +1,28 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product } from '../../src/assets/Components/Products/types';
+
+// Ação assíncrona para buscar os produtos da API
+export const fetchProducts = createAsyncThunk(
+  'products/fetchProducts',
+  async () => {
+    const response = await fetch("https://produtosform-production.up.railway.app/produtos");
+    if (!response.ok) {
+      throw new Error("Erro ao buscar os produtos");
+    }
+    return await response.json();
+  }
+);
+
+interface Product {
+  _id: string;
+  id?: string;
+  nome: string;
+  descricao: string;
+  preco: number;
+  quantidade: number;
+  categoria: string;
+  imagem: string;
+  marca: string;
+}
 
 interface ProductsState {
   productsData: Product[];
@@ -13,65 +36,61 @@ const initialState: ProductsState = {
   error: null,
 };
 
-// Ação assíncrona para buscar produtos
-export const fetchProducts = createAsyncThunk<Product[]>(
-  'products/fetchProducts',
-  async () => {
-    const response = await fetch('http://localhost:3003/produtos', {
-      method: 'GET', // Ou 'POST' dependendo da sua API
-    });
-    if (!response.ok) {
-      throw new Error('Falha ao carregar os produtos');
-    }
-    return await response.json(); // Retorna os dados da API
-  }
-);
-
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setProductsData: (state, action: PayloadAction<Product[]>) => {
-      state.productsData = action.payload;
+    setProductsData(state, action: PayloadAction<Product[]>) {
+      state.productsData = action.payload.map(product => ({
+        ...product,
+        id: product._id,  // Mapeando corretamente o _id para id
+      }));
     },
-    addProduct: (state, action: PayloadAction<Product>) => {
-      state.productsData.push(action.payload); // Adiciona um novo produto
-    },
-    updateProduct: (state, action: PayloadAction<Product>) => {
-      const index = state.productsData.findIndex(
-        (product) => product.id === action.payload.id
-      );
-      if (index !== -1) {
-        state.productsData[index] = action.payload; // Atualiza o produto na lista
+    addProduct(state, action: PayloadAction<Product>) {
+      const product = action.payload;
+      const exists = state.productsData.some(existingProduct => existingProduct.id === product.id);
+      if (!exists) {
+        state.productsData.push(product);
       } else {
-        console.error(`Produto com ID ${action.payload.id} não encontrado!`);
+        console.warn(`Produto com ID ${product.id} já existe!`);
       }
     },
-    deleteProduct: (state, action: PayloadAction<string>) => {
-      const idToDelete = action.payload;
-      state.productsData = state.productsData.filter(
-        (product) => String(product.id) !== idToDelete
+    updateProduct(state, action: PayloadAction<Product>) {
+      const product = action.payload;
+      if (!product.id && !product._id) {
+        console.error("Produto sem ID ou _id, não é possível atualizar!");
+        return;
+      }
+      const index = state.productsData.findIndex(
+        (existingProduct) => existingProduct.id === product.id || existingProduct._id === product._id
       );
+      if (index !== -1) {
+        state.productsData[index] = product;
+      } else {
+        console.error(`Produto com ID ${product.id || product._id} não encontrado!`);
+      }
+    },
+    deleteProduct(state, action: PayloadAction<string>) {
+      const productId = action.payload;
+      state.productsData = state.productsData.filter(product => product.id !== productId);
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.loading = true; // Carregando os dados
-        state.error = null; // Resetando o erro, se houver
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
-        state.productsData = action.payload; // Dados recebidos da API
-        state.loading = false; // Carregamento concluído
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.productsData = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false; // Erro ao carregar
-        state.error = action.error.message || 'Falha ao carregar os produtos';
+        state.loading = false;
+        state.error = action.error.message || "Erro desconhecido";
       });
   },
 });
 
-export const { setProductsData, addProduct, updateProduct, deleteProduct } =
-  productsSlice.actions;
-
+export const { setProductsData, addProduct, updateProduct, deleteProduct } = productsSlice.actions;
 export default productsSlice.reducer;

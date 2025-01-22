@@ -1,11 +1,12 @@
 export interface Product {
-  [x: string]: any;
-  id: number;
+  _id: any;
+  id: string;
   nome: string;
   descricao: string;
-  preco: number;
+  preco: number; // Certifique-se de que 'preco' seja do tipo 'number'
   quantidade: number;
   categoria: string;
-  marca: string; // Nova propriedade adicionada
-  imagem?: string | File; // Imagem do produto como string (URL) ou arquivo
+  marca: string;
+  status: string;
+  imagem: string;
 }

@@ -8,17 +8,19 @@ import {
 import axios from "axios";
 import { FaSearch, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
-import { message, Input } from "antd"; // Importando Input do Ant Design
+import { message, Input, Spin } from "antd"; // Importando Spin do Ant Design
 import "./ListClients_2.css";
 import EditClient from "../ListClients_2/EditClient/EditClient";
 import DeleteClient from "../ListClients_2/DeleteClient/DeleteClient";
 import React from "react";
+import { Empty } from "antd";
 
-const baseURL = "https://clientes-production-df47.up.railway.app"; // URL da API de produção
+const baseURL = "https://clientes-production-df47.up.railway.app";
 const parseDate = (date: string) => {
   const [day, month, year] = date.split("/");
   return `${year}-${month}-${day}`;
 };
+
 export interface Client {
   _id: string;
   id: string; // Agora o 'id' é obrigatório
@@ -30,6 +32,7 @@ export interface Client {
   email: string;
   cadastradoEm: string;
 }
+
 function ListClients_2() {
   const dispatch = useDispatch();
   const clientsData = useSelector(
@@ -38,14 +41,14 @@ function ListClients_2() {
   const [loading, setLoading] = useState(true);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de busca
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchClients = async () => {
       if (loading) {
         try {
           const response = await axios.get(`${baseURL}/clientes`);
-          dispatch(setClientsData(response.data)); // Atualiza os dados no Redux
+          dispatch(setClientsData(response.data));
         } catch (err: any) {
           if (err.response && err.response.status === 429) {
             const retryAfter = err.response.headers["retry-after"] || 5;
@@ -71,7 +74,7 @@ function ListClients_2() {
     try {
       const response = await axios.delete(`${baseURL}/clientes/${clientId}`);
       if (response.status === 200) {
-        dispatch(deleteClient(clientId)); // Remova do Redux após sucesso
+        dispatch(deleteClient(clientId));
         message.success("Cliente excluído com sucesso!");
       } else {
         message.error("Erro ao excluir cliente no servidor.");
@@ -84,19 +87,18 @@ function ListClients_2() {
     }
   };
 
-  // Função para atualizar o cliente
   const handleUpdateClient = async (updatedClient: Client) => {
     setLoading(true);
     try {
       const response = await axios.put(
-        `https://clientes-production-df47.up.railway.app/clientes/${updatedClient._id}`, // Use updatedClient._id aqui
+        `${baseURL}/clientes/${updatedClient._id}`,
         updatedClient,
         {
           headers: { "Content-Type": "application/json" },
         }
       );
       if (response.status === 200 && response.data) {
-        dispatch(updateClient(response.data.client)); // Envia o cliente atualizado para o Redux
+        dispatch(updateClient(response.data.client));
         setEditingClient(null);
         message.success("Cliente atualizado com sucesso!");
       } else {
@@ -127,7 +129,9 @@ function ListClients_2() {
   return (
     <section className="container_list_clients_2">
       {loading ? (
-        <div>Carregando...</div>
+        <div className="loading_container">
+          <Spin tip="Carregando..." size="large" />
+        </div>
       ) : (
         <>
           {editingClient && (
@@ -146,7 +150,7 @@ function ListClients_2() {
             />
           )}
 
-          <div className="search_container_input">
+          <div className="search_container_input_cli">
             <Input
               placeholder="Buscar cliente..."
               value={searchTerm}
@@ -156,25 +160,26 @@ function ListClients_2() {
             />
           </div>
 
-          <table className="clients_table">
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Situação</th>
-                <th>Telefone</th>
-                <th>Celular</th>
-                <th>E-mail</th>
-                <th>Data de Cadastro</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredClients.length > 0 ? (
-                filteredClients.map((client) => (
+          {filteredClients.length > 0 ? (
+            <table className="clients_table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Tipo</th>
+                  <th>Situação</th>
+                  <th>Telefone</th>
+                  <th>Celular</th>
+                  <th>E-mail</th>
+                  <th>Data de Cadastro</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredClients.map((client) => (
                   <tr key={client._id}>
-                    <td>{client._id.slice(0, 30)}</td>
+                    <td>{client._id.slice(0, 6)}</td>{" "}
+                    {/* Exibindo apenas os primeiros 6 caracteres */}
                     <td>{client.nome}</td>
                     <td>{client.tipo}</td>
                     <td>
@@ -184,7 +189,7 @@ function ListClients_2() {
                     <td>{client.celular}</td>
                     <td>{client.email}</td>
                     <td>
-                      {client.cadastradoEm
+                      {client.cadastradoEm && client.cadastradoEm.includes("/")
                         ? new Date(
                             parseDate(client.cadastradoEm)
                           ).toLocaleDateString("pt-BR")
@@ -205,14 +210,12 @@ function ListClients_2() {
                       </button>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={9}>Nenhum cliente encontrado.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <Empty description="Nenhum cliente encontrado." />
+          )}
         </>
       )}
     </section>

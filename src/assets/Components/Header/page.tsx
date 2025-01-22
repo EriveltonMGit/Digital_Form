@@ -52,8 +52,8 @@ function Header() {
       icon: <FiFileText />,
       label: 'Orçamentos',
       children: [
-        { key: '10', label: <Link to="/Templates/CreateBudget">Criar Orçamento</Link> },
-        { key: '11', label: <Link to="/Templates/BudgetManagement">Gerenciar Orçamentos</Link> },
+        { key: '10', label: <Link to="/budgetform">Criar Orçamento</Link> },
+        { key: '11', label: <Link to="/BudgetTable">Gerenciar Orçamentos</Link> },
       ],
     },
     {
@@ -88,7 +88,7 @@ function Header() {
       icon: <FiDollarSign />,
       label: 'Financeiro',
       children: [
-        { key: '18', label: <Link to="/Templates/AccountsPayable">Contas a Pagar</Link> },
+        { key: '18', label: <Link to="/AccountsPayable">Contas a Pagar</Link> },
         { key: '19', label: <Link to="/Templates/AccountsReceivable">Contas a Receber</Link> },
       ],
     },

@@ -30,8 +30,9 @@ const clientsSlice = createSlice({
         ...client,
         id: client._id, // Sincroniza o 'id' com o '_id' do MongoDB
       }));
+      console.log("Clientes carregados:", state.clientsData.length);
     },
-    
+
     // Adicionar um novo cliente
     addClient(state, action: PayloadAction<Client>) {
       const client = action.payload;
@@ -40,6 +41,7 @@ const clientsSlice = createSlice({
       const exists = state.clientsData.some(existingClient => existingClient.id === client.id);
       if (!exists) {
         state.clientsData.push(client); // Adiciona o cliente ao estado
+        console.log(`Cliente com ID ${client.id} adicionado.`);
       } else {
         console.warn(`Cliente com ID ${client.id} já existe!`);
       }
@@ -48,14 +50,15 @@ const clientsSlice = createSlice({
     // Atualizar os dados de um cliente
     updateClient(state, action: PayloadAction<Client>) {
       const client = action.payload;
-      
+
       // Garantir que temos o 'id' ou '_id' para atualização
       const index = state.clientsData.findIndex(
         (existingClient) => existingClient.id === client.id || existingClient._id === client._id
       );
-      
+
       if (index !== -1) {
         state.clientsData[index] = client; // Atualiza o cliente
+        console.log(`Cliente com ID ${client.id} atualizado.`);
       } else {
         console.error(`Cliente com ID ${client.id || client._id} não encontrado!`);
       }
@@ -64,9 +67,16 @@ const clientsSlice = createSlice({
     // Excluir um cliente
     deleteClient(state, action: PayloadAction<string>) {
       const clientId = action.payload;
-      
+
       // Filtra a lista removendo o cliente pelo 'id'
+      const previousLength = state.clientsData.length;
       state.clientsData = state.clientsData.filter(client => client.id !== clientId);
+
+      if (state.clientsData.length < previousLength) {
+        console.log(`Cliente com ID ${clientId} excluído.`);
+      } else {
+        console.error(`Cliente com ID ${clientId} não encontrado para exclusão.`);
+      }
     },
   },
 });

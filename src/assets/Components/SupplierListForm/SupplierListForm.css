@@ -86,5 +86,6 @@
 
 /* Caso queira ajustar a fonte do cabeçalho também */
 .table_list_suppliers .ant-table-thead > tr > th {
-  font-size: 14px; /* Tamanho da fonte do cabeçalho */
+  font-size: 12px; 
+  background-color: var(--blue); 
 }

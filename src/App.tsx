@@ -14,6 +14,9 @@ import ProductList from './assets/Components/Products/ListProducts/page';
 import BrandList from './Templates/Brands/BrandList';
 import TechServiceCatalog from './Templates/ServiceCatalog/TechService';
 import ServiceRequestTable from './assets/Components/TechService/ServiceRequestTable/ServiceRequestTable';
+import BudgetForm from './Templates/BudgetForm/BudgetForm';
+import ManageBudgets from './assets/Components/ManageBudgets/ManageBudgets';
+import AccountsPayable from './Templates/FinancialBalance/FinancialBalance';
 
 
 
@@ -35,6 +38,18 @@ export default function App() {
         <Route path="/brandList" element={<BrandList />} />
         <Route path="/techcatalog" element={<TechServiceCatalog />} />
         <Route path="/servicerequesttable" element={<ServiceRequestTable />} />
+        <Route path="/budgetform" element={<BudgetForm />} />
+        <Route path="/BudgetTable" element={<ManageBudgets />} />
+
+
+
+
+
+
+
+
+        <Route path="/AccountsPayable" element={<AccountsPayable />} />
+
         {/* Adicione outras rotas conforme necessário */}
         <Route path="*" element={<NotFoundPage />} />
         

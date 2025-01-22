@@ -4,7 +4,7 @@ import { message, Input, Button, Spin } from 'antd';
 import './EditClient.css';
 import React from 'react';
 import axios from 'axios';
-const baseURL = "https://clientes-production-df47.up.railway.app"; 
+
 // Em ambos os arquivos, modifique a definição da interface Client
 interface Client {
   _id: string;

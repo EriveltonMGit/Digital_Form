@@ -14,21 +14,21 @@ import { FaBox } from "react-icons/fa";
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
-  const products = useSelector(
-    (state: RootState) => state.products.productsData
-  );
+  const products = useSelector((state: RootState) => state.products.productsData);
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Função para deletar produto
   const handleDelete = async (_id: string) => {
     try {
-      const response = await fetch(`http://localhost:3003/produtos/${_id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://produtosform-production.up.railway.app/produtos/${_id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Erro ao excluir o produto");
@@ -36,24 +36,18 @@ const ProductList: React.FC = () => {
 
       dispatch(deleteProduct(_id));
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        message.error(`Erro: ${error.message}`);
-      } else {
-        message.error("Erro desconhecido.");
-      }
+      message.error("Erro ao excluir o produto.");
     }
   };
 
-  // Função para editar produto
   const handleEdit = (product: Product) => {
     setSelectedProduct(product);
     setEditModalVisible(true);
   };
 
-  // Função para buscar produtos da API
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3003/produtos");
+      const response = await fetch("https://produtosform-production.up.railway.app/produtos");
 
       if (!response.ok) {
         throw new Error("Erro ao buscar os produtos");
@@ -70,20 +64,19 @@ const ProductList: React.FC = () => {
     fetchProducts();
   }, [dispatch]);
 
-  // Função de filtro
   const filteredProducts = useMemo(() => {
     const searchTermLower = searchTerm.toLowerCase();
-    return products.filter(
-      (product) =>
-        product.nome.toLowerCase().includes(searchTermLower) ||
-        product.descricao.toLowerCase().includes(searchTermLower) ||
-        product.categoria.toLowerCase().includes(searchTermLower) ||
-        product.marca?.toLowerCase().includes(searchTermLower) || // Adicionado filtro por marca
-        product.id?.toString().toLowerCase().includes(searchTermLower)
-    );
+    return products.filter((product) => {
+      return (
+        (product.nome?.toLowerCase().includes(searchTermLower) ?? false) ||
+        (product.descricao?.toLowerCase().includes(searchTermLower) ?? false) ||
+        (product.categoria?.toLowerCase().includes(searchTermLower) ?? false) ||
+        (product.marca?.toLowerCase().includes(searchTermLower) ?? false) ||
+        (product.id?.toString().toLowerCase().includes(searchTermLower) ?? false)
+      );
+    });
   }, [products, searchTerm]);
 
-  // Definindo as colunas da tabela
   const columns = [
     {
       title: "ID",
@@ -123,7 +116,7 @@ const ProductList: React.FC = () => {
       width: 200,
     },
     {
-      title: "Marca", // Nova coluna
+      title: "Marca",
       dataIndex: "marca",
       key: "marca",
       width: 150,
@@ -142,13 +135,7 @@ const ProductList: React.FC = () => {
         if (!url) {
           return <span>Sem imagem</span>;
         }
-        return (
-          <img
-            src={url}
-            alt="Produto"
-            style={{ width: 50, height: 50, objectFit: "cover" }}
-          />
-        );
+        return <img src={url} alt="Produto" style={{ width: 50, height: 50, objectFit: "cover" }} />;
       },
     },
     {
@@ -176,13 +163,13 @@ const ProductList: React.FC = () => {
 
   return (
     <section className="container_list_products">
-      {/* header */}
       <CustomHeader
         title="Lista de Produtos"
         icon={<FaBox />}
-        breadcrumbs={[{ label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
-          { label: "Cadastro de Produ...", icon: <IoPeopleSharp />, link: "/register" },
-          { label: "Marcas", icon: <IoSearchSharp />, link: "/brandList"  },
+        breadcrumbs={[
+          { label: "Clientes", icon: <IoHomeSharp />, link: "/clients" },
+          { label: "Cadastro de Produtos", icon: <IoPeopleSharp />, link: "/register" },
+          { label: "Marcas", icon: <IoSearchSharp />, link: "/brandList" },
         ]}
       />
       <div className="area_list_products">
@@ -199,7 +186,7 @@ const ProductList: React.FC = () => {
       <Table
         dataSource={filteredProducts}
         columns={columns}
-        rowKey="id"
+        rowKey={(record) => record._id} // Garantindo que o "id" seja usado como a chave
         pagination={false}
         className="table_list_products"
       />
@@ -211,7 +198,9 @@ const ProductList: React.FC = () => {
         onSave={(updatedProduct) => {
           dispatch(
             setProductsData(
-              products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+              products.map((p) =>
+                p.id === updatedProduct.id ? updatedProduct : p
+              )
             )
           );
           setEditModalVisible(false);

@@ -1,0 +1,89 @@
+/*COLORS */
+:root {
+    --primary: #007bff;
+    --red: #be0e0e;
+    --dark: #121315;
+    --blue: #b3e9e7;
+  
+    --yellow: #f2ff00;
+    --gold: #daa520;
+    --teal: #13ff00;
+    --cyan: #e0eeee;
+  
+   
+    --indigo: #5011b6;
+    --purple: #6f42c1;
+    --orange: #fd7e14;
+    --green: #4ade80;
+  
+    --white: #ffffff;
+    --gray: #6c757d31;
+    --gray-dark: #343a40;
+  
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+  
+    --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    
+    --card: #211d1d;
+  }
+
+
+
+.financial-balance-card {
+    width: 82%;
+    height:98%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    padding: 0.5rem;
+    border: 1px solid var( --secondary);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5rem;
+    margin-top: 1vh;
+    margin-right: 1vw;
+    box-shadow: 1px 1px 1rem var( --secondary);
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var( --light);
+  }
+  /* form_financial */
+  .form_financial-balance{
+    width: 100%;
+ height: auto;
+
+  }
+  
+  .ant-statistic-title {
+    font-size: 18px;
+    font-weight: 600;
+
+  }
+  
+  .ant-statistic-value {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  .ant-btn-primary {
+    background-color: #1890ff;
+    border-color: #1890ff;
+  }
+  
+  .ant-btn-primary:hover {
+    background-color: #40a9ff;
+    border-color: #40a9ff;
+  }
+  
+  .ant-statistic-suffix {
+    font-size: 14px;
+    color: #1890ff;
+  }
+ 

@@ -4,13 +4,14 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"node ./api/server.mjs\" \"node ./api/server_fornecedores.mjs\" \"node ./api/server_products.mjs\" \"node ./api/server_funcionarios.mjs\" \"node ./api/server_catologServices.mjs\"",
+    "dev": "concurrently \"vite\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "proxy": "https://clientes-production-df47.up.railway.app"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.2.6",
     "@reduxjs/toolkit": "^2.5.0",
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.23.1",
