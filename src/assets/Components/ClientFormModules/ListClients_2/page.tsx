@@ -130,8 +130,8 @@ function ListClients_2() {
     <section className="container_list_clients_2">
       {loading ? (
         <div className="loading_container">
-          <Spin tip="Carregando..." size="large" />
-        </div>
+        <Spin size="large" />
+      </div>
       ) : (
         <>
           {editingClient && (
@@ -178,8 +178,7 @@ function ListClients_2() {
               <tbody>
                 {filteredClients.map((client) => (
                   <tr key={client._id}>
-                    <td>{client._id.slice(0, 6)}</td>{" "}
-                    {/* Exibindo apenas os primeiros 6 caracteres */}
+                    <td>{client._id.slice(0, 6)}</td>
                     <td>{client.nome}</td>
                     <td>{client.tipo}</td>
                     <td>

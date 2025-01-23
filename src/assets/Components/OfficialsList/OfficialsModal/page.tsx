@@ -57,12 +57,14 @@ function ModalEmployee({ isModalOpen, handleCancel, onFinish }: ModalEmployeePro
   };
 
   return (
-    <Modal
+   <section className='container_modal_officials'>
+     <Modal
       title="Cadastro de Funcionário"
       open={isModalOpen}
       onCancel={handleCancel}
       footer={null}
-      className="custom-modal"
+      className="custom_modal_funcionarios"
+      width={800} 
     >
       <Form
         form={form}
@@ -177,6 +179,7 @@ function ModalEmployee({ isModalOpen, handleCancel, onFinish }: ModalEmployeePro
         </Form.Item>
       </Form>
     </Modal>
+   </section>
   );
 }
 

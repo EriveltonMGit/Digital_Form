@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './Home.css';
+import "./Home.css";
 import FinancialDashboard from "../../assets/Components/DashBoardFinancial/FinancialDashboard";
 import CustomHeader from "../../Page/CustomHeader/CustomHeader";
 import { AiFillDashboard } from "react-icons/ai";
@@ -26,13 +26,14 @@ function Home() {
           icon={<AiFillDashboard />}
           breadcrumbs={[]}
         />
-        
+
         {loading ? (
           <>
-            <Skeleton active paragraph={{ rows: 2 }} />
-            <Skeleton active paragraph={{ rows: 4}} />
-            <Skeleton active paragraph={{ rows: 2 }} />
-          
+            <div className="container_loading">
+              <Skeleton active paragraph={{ rows: 2 }} />
+              <Skeleton active paragraph={{ rows: 4 }} />
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </div>
           </>
         ) : (
           <>

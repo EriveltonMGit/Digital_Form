@@ -66,4 +66,15 @@
 .ant-row {
   margin-bottom: 20px;
 }
+/* container_loading */
+.container_loading{
+  
+  height: 90%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  margin-top: 10vh;
+}
 

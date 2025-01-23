@@ -121,7 +121,7 @@
   }
 }
 /* form_section_2 */
-.form_section_2 {
+.form_section_2_catetegory {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -130,13 +130,16 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   background-color: #fff;
-
   width: 100%;
 }
 /* form_row */
 .form_row {
-  width: 50%;
-  height: 100%;
+  width: 30%;
+height: 100%;
+
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 /* area_btn_products */
