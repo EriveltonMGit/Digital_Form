@@ -1,0 +1,29 @@
+/* ;container_OrdemServicoForm */
+.container_OrdemServicoForm {
+  width: 82%;
+  height: 98%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 0.5rem;
+  border: 1px solid var(--secondary);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  margin-top: 1vh;
+  margin-right: 1vw;
+  box-shadow: 1px 1px 1rem var(--secondary);
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--light);
+  
+}
+
+/* modal_service_order */
+.form_order_service {
+  height: 90%;
+  width: 100%;
+}

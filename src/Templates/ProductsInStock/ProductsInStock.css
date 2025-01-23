@@ -33,13 +33,13 @@
 
 
 
-.financial-balance-card {
+/* products-in-stock-container */
+.products-in-stock-container{
     width: 82%;
     height:98%;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 22px;
     flex-direction: column;
     padding: 0.5rem;
     border: 1px solid var( --secondary);
@@ -54,51 +54,9 @@
     top: 0;
     right: 0;
     background-color: var( --light);
-   
-  }
- 
-  
-  .ant-statistic-title {
-    font-size: 18px;
-    font-weight: 600;
-
-  }
-  
-  .ant-statistic-value {
-    font-size: 32px;
-    font-weight: bold;
-  }
-  
-  .ant-btn-primary {
-    background-color: #1890ff;
-    border-color: #1890ff;
-  }
-  
-  .ant-btn-primary:hover {
-    background-color: #40a9ff;
-    border-color: #40a9ff;
-  }
-  
-  .ant-statistic-suffix {
-    font-size: 14px;
-    color: #1890ff;
-  }
- /* header-card-balance */
- .header-card-balance{
-  width: 100%;
-  margin: 10vh;
- }
-.graph-card{
-  width: 100%; 
-}
- .chart-container {
-  width: 100%; /* Garantindo que o contêiner ocupe toda a largura disponível */
-  height: 30%; /* A altura continua controlada */
- 
 }
 
-/* detail-card */
-.detail-card{
-
-  width: 100%;
+/* products-table_stock */
+.products-table_stock{
+    height: 90%;
 }

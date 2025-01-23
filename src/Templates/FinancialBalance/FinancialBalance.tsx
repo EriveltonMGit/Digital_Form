@@ -1,167 +1,169 @@
 import React, { useState, useEffect } from "react";
-import { Card, Statistic, Row, Col, Button, Tooltip, Modal } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Statistic,
+  Button,
+  Tooltip,
+  Modal,
+  Divider,
+} from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
-import { Line } from "@ant-design/charts"; // Se você quiser adicionar um gráfico de linha
+import { Line } from "@ant-design/charts";
 import "./FinancialBalance.css";
+import CustomHeader from "../../Page/CustomHeader/CustomHeader";
+import { IoCartSharp, IoCubeSharp, IoHomeSharp } from "react-icons/io5";
+import { GrCatalog } from "react-icons/gr";
 
 const AccountsPayable: React.FC = () => {
-  const [balance, setBalance] = useState(0);
-  const [percentageChange, setPercentageChange] = useState(0);
-  const [totalEntradas, setTotalEntradas] = useState(30000);
-  const [totalSaidas, setTotalSaidas] = useState(15000);
-  const [contasPagar, setContasPagar] = useState(5000);
-  const [contasReceber, setContasReceber] = useState(12000);
-  const [indiceLiquidez, setIndiceLiquidez] = useState(1.5);
-  const [comparacaoMesAtual, setComparacaoMesAtual] = useState(8);
+  const [balance, setBalance] = useState(35000);
+  const [entradas, setEntradas] = useState(20000);
+  const [saidas, setSaidas] = useState(10000);
+  const [comparacaoMes, setComparacaoMes] = useState(5);
   const [loading, setLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    // Simulação de dados vindos de uma API ou de algum backend
     setTimeout(() => {
-      setBalance(50000); // Exemplo de saldo
-      setPercentageChange(8); // Exemplo de variação percentual do saldo
       setLoading(false);
-    }, 1000);
+    }, 1000); // Simulando carregamento de dados
   }, []);
 
   const data = [
-    { month: "Jan", value: 20000 },
-    { month: "Feb", value: 25000 },
-    { month: "Mar", value: 30000 },
-    { month: "Apr", value: 35000 },
-    { month: "May", value: 40000 },
-    { month: "Jun", value: 45000 },
-    { month: "Jul", value: 50000 },
+    { month: "Jan", value: 10000 },
+    { month: "Feb", value: 15000 },
+    { month: "Mar", value: 20000 },
+    { month: "Apr", value: 25000 },
+    { month: "May", value: 30000 },
+    { month: "Jun", value: 35000 },
+    { month: "Jul", value: 40000 },
   ];
 
   const config = {
     data,
     xField: "month",
     yField: "value",
-    color: "#1890ff",
-    lineStyle: { lineWidth: 3 },
-    xAxis: {
-      label: {
-        style: {
-          fontSize: 12,
-        },
-      },
-    },
-    yAxis: {
-      label: {
-        formatter: (v: any) => `R$${v}`,
-      },
-    },
+    lineStyle: { lineWidth: 4 },
+    color: "#4f9c93",
     tooltip: {
       formatter: (datum: any) => ({
         name: "Saldo",
         value: `R$${datum.value}`,
       }),
     },
+    height: 250,
   };
 
-  // Função para abrir o modal
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  // Função para fechar o modal
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
   return (
-    <section className="financial-balance-card">
-      <Card className="form_financial-balance" title="Saldo Financeiro" loading={loading} bordered>
-        <Row gutter={24} justify="space-between">
-          <Col span={12}>
-            <Statistic
-              title="Saldo Atual"
-              value={`R$ ${balance.toFixed(2)}`}
-              precision={2}
-              valueStyle={{ fontSize: "32px", fontWeight: "bold", color: "#52c41a" }}
-              prefix={<ArrowUpOutlined />}
-              suffix="BRL"
-            />
-            <Tooltip title="Variação percentual do saldo">
-              <div
-                style={{
-                  marginTop: "10px",
-                  fontSize: "16px",
-                  color: percentageChange >= 0 ? "#52c41a" : "#f5222d",
+    <div className="financial-balance-card">
+      <CustomHeader
+        title="Produtos em Estoque"
+        icon={<GrCatalog />}
+        breadcrumbs={[
+          { label: "Início", icon: <IoHomeSharp />, link: "/" }, // Página inicial do sistema
+          { label: "Catálogo", icon: <IoCubeSharp />, link: "/catalogo" }, // Seção de catálogo geral
+          { label: "Produtos em Estoque", icon: <IoCartSharp /> }, // Página atual
+        ]}
+      />
+
+      <Card className="header-card-balance" loading={loading} bordered={false}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Card className="info-card">
+              <Statistic
+                title="Saldo Atual"
+                value={`R$ ${balance.toFixed(2)}`}
+                valueStyle={{
+                  fontSize: 32,
+                  fontWeight: "bold",
+                  color: "#52c41a",
                 }}
-              >
-                {percentageChange >= 0 ? (
-                  <>
-                    <ArrowUpOutlined />
-                    {percentageChange}% de aumento
-                  </>
-                ) : (
-                  <>
-                    <ArrowDownOutlined />
-                    {Math.abs(percentageChange)}% de diminuição
-                  </>
-                )}
-              </div>
-            </Tooltip>
-            <Button type="primary" onClick={showModal}>
-              Ver Detalhes
-            </Button>
-          </Col>
-          <Col span={12}>
-            <Line {...config} />
-          </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <Statistic title="Total de Entradas" value={`R$ ${totalEntradas.toFixed(2)}`} />
-            <Statistic title="Total de Saídas" value={`R$ ${totalSaidas.toFixed(2)}`} />
-          </Col>
-          <Col span={12}>
-            <Statistic title="Contas a Pagar" value={`R$ ${contasPagar.toFixed(2)}`} />
-            <Statistic title="Contas a Receber" value={`R$ ${contasReceber.toFixed(2)}`} />
-          </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <Statistic title="Índice de Liquidez" value={`${indiceLiquidez.toFixed(2)}:1`} />
-          </Col>
-          <Col span={12}>
-            <Statistic
-              title="Comparação com o Mês Passado"
-              value={`${comparacaoMesAtual}%`}
-              precision={2}
-              valueStyle={{
-                color: comparacaoMesAtual >= 0 ? "#52c41a" : "#f5222d",
-              }}
-            />
-          </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <Card title="Categorias de Entradas">
-              <ul>
-                <li>Vendas: R$ 30,000</li>
-                <li>Investimentos: R$ 5,000</li>
-              </ul>
+                prefix={<ArrowUpOutlined />}
+              />
             </Card>
           </Col>
-          <Col span={12}>
-            <Card title="Categorias de Saídas">
-              <ul>
-                <li>Pagamentos de Fornecedores: R$ 10,000</li>
-                <li>Impostos: R$ 2,000</li>
-              </ul>
+          <Col span={8}>
+            <Card className="info-card">
+              <Statistic
+                title="Entradas Totais"
+                value={`R$ ${entradas.toFixed(2)}`}
+                valueStyle={{
+                  fontSize: 32,
+                  fontWeight: "bold",
+                  color: "#1890ff",
+                }}
+                prefix={<ArrowUpOutlined />}
+              />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card className="info-card">
+              <Statistic
+                title="Saídas Totais"
+                value={`R$ ${saidas.toFixed(2)}`}
+                valueStyle={{
+                  fontSize: 32,
+                  fontWeight: "bold",
+                  color: "#f5222d",
+                }}
+                prefix={<ArrowDownOutlined />}
+              />
             </Card>
           </Col>
         </Row>
       </Card>
 
-      {/* Modal com informações detalhadas */}
+      <Card className="graph-card" loading={loading} bordered={false}>
+        <div className="chart-container">
+          <Line {...config} />
+        </div>
+      </Card>
+
+      <Row gutter={24} className="detail-card">
+        <Col span={12}>
+          <Card title="Comparação com o Mês Passado">
+            <Statistic
+              value={`${comparacaoMes}%`}
+              valueStyle={{
+                fontSize: 24,
+                color: comparacaoMes >= 0 ? "#52c41a" : "#f5222d",
+              }}
+              prefix={
+                comparacaoMes >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />
+              }
+            />
+            <Button
+              className="details-button"
+              type="primary"
+              onClick={showModal}
+            >
+              Ver Detalhes
+            </Button>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card title="Informações Financeiras">
+            <ul>
+              <li>Contas a Pagar: R$ 5,000</li>
+              <li>Contas a Receber: R$ 12,000</li>
+            </ul>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Modal */}
       <Modal
-        title="Detalhes do Saldo Financeiro"
-        visible={isModalVisible}
+        title="Detalhes Financeiros"
+        open={isModalVisible}
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
@@ -172,24 +174,29 @@ const AccountsPayable: React.FC = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Statistic title="Saldo Atual" value={`R$ ${balance.toFixed(2)}`} />
-            <Statistic title="Total de Entradas" value={`R$ ${totalEntradas.toFixed(2)}`} />
-            <Statistic title="Total de Saídas" value={`R$ ${totalSaidas.toFixed(2)}`} />
-            <Statistic title="Contas a Pagar" value={`R$ ${contasPagar.toFixed(2)}`} />
-            <Statistic title="Contas a Receber" value={`R$ ${contasReceber.toFixed(2)}`} />
+            <Statistic
+              title="Entradas Totais"
+              value={`R$ ${entradas.toFixed(2)}`}
+            />
+            <Statistic
+              title="Saídas Totais"
+              value={`R$ ${saidas.toFixed(2)}`}
+            />
           </Col>
           <Col span={12}>
-            <Statistic title="Índice de Liquidez" value={`${indiceLiquidez.toFixed(2)}:1`} />
+            <Statistic title="Contas a Pagar" value={`R$ 5,000`} />
+            <Statistic title="Contas a Receber" value={`R$ 12,000`} />
             <Statistic
               title="Comparação com o Mês Passado"
-              value={`${comparacaoMesAtual}%`}
+              value={`${comparacaoMes}%`}
               valueStyle={{
-                color: comparacaoMesAtual >= 0 ? "#52c41a" : "#f5222d",
+                color: comparacaoMes >= 0 ? "#52c41a" : "#f5222d",
               }}
             />
           </Col>
         </Row>
       </Modal>
-    </section>
+    </div>
   );
 };
 

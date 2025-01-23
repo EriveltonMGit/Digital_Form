@@ -61,8 +61,8 @@ function Header() {
       icon: <FiClipboard />,
       label: 'Ordens de Serviços',
       children: [
-        { key: '12', label: <Link to="/Templates/CreateOrder">Criar Ordem</Link> },
-        { key: '13', label: <Link to="/Templates/OrderHistory">Histórico de Ordens</Link> },
+        { key: '12', label: <Link to="/OrdemServicoForm">Criar Ordem</Link> },
+        { key: '13', label: <Link to="/ListaOrdensServico">Histórico de Ordens</Link> },
       ],
     },
     {
@@ -70,8 +70,8 @@ function Header() {
       icon: <FiShoppingCart />,
       label: 'Vendas',
       children: [
-        { key: '14', label: <Link to="/Templates/Orders">Pedidos</Link> },
-        { key: '15', label: <Link to="/Templates/SalesHistory">Histórico</Link> },
+        { key: '14', label: <Link to="/SalesOrderForm">Pedidos</Link> },
+        { key: '15', label: <Link to="/SalesOrderTable">Histórico</Link> },
       ],
     },
     {
@@ -79,8 +79,8 @@ function Header() {
       icon: <FiLayers />,
       label: 'Estoque',
       children: [
-        { key: '16', label: <Link to="/Templates/StockProducts">Produtos em Estoque</Link> },
-        { key: '17', label: <Link to="/Templates/StockAdjustments">Ajustes de Estoque</Link> },
+        { key: '16', label: <Link to="/ProductsInStock">Produtos em Estoque</Link> },
+        { key: '17', label: <Link to="/StockAdjustment">Ajustes de Estoque</Link> },
       ],
     },
     {
@@ -89,7 +89,7 @@ function Header() {
       label: 'Financeiro',
       children: [
         { key: '18', label: <Link to="/AccountsPayable">Contas a Pagar</Link> },
-        { key: '19', label: <Link to="/Templates/AccountsReceivable">Contas a Receber</Link> },
+        { key: '19', label: <Link to="/AccountsReceivable">Contas a Receber</Link> },
       ],
     },
     {
@@ -97,8 +97,8 @@ function Header() {
       icon: <FiFile />,
       label: 'Notas Fiscais',
       children: [
-        { key: '20', label: <Link to="/Templates/IssueInvoice">Emitir Nota</Link> },
-        { key: '21', label: <Link to="/Templates/InvoiceConsultation">Consultar Notas</Link> },
+        { key: '20', label: <Link to="/NoteComponent">Emitir Nota</Link> },
+        { key: '21', label: <Link to="/InvoiceConsultation">Consultar Notas</Link> },
       ],
     },
     {
@@ -142,7 +142,7 @@ function Header() {
       icon: <FiSettings />,
       label: 'Configurações',
       children: [
-        { key: '30', label: <Link to="/Templates/Preferences">Preferências</Link> },
+        { key: '30', label: <Link to="/PreferencesSettings">Preferências</Link> },
         { key: '31', label: <Link to="/Templates/UserPermissions">Usuários e Permissões</Link> },
       ],
     },

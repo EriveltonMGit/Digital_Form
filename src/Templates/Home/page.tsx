@@ -7,6 +7,7 @@ import CashFlowChart from "../../assets/Components/DashBoardFinancial/CashFlowCh
 import RecentTransactions from "../../assets/Components/DashBoardFinancial/RecentTransactions";
 import ProductDashboard from "../../assets/Components/DashBoardFinancial/ProductDashboard";
 import { Skeleton } from "antd"; // Importando o Skeleton
+import Calendarry from "../../assets/Components/DashBoardFinancial/Calendar";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -14,8 +15,8 @@ function Home() {
   useEffect(() => {
     // Simulando o carregamento de dados
     setTimeout(() => {
-      setLoading(false); // Dados carregados após 3 segundos
-    }, 3000); // Você pode ajustar o tempo de espera aqui
+      setLoading(false); // Dados carregados após 2 segundos
+    }, 2000); // Você pode ajustar o tempo de espera aqui
   }, []);
 
   return (
@@ -41,6 +42,8 @@ function Home() {
             <CashFlowChart />
             <RecentTransactions />
             <ProductDashboard />
+            <Calendarry/>
+            
           </>
         )}
       </section>

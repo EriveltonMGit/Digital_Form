@@ -182,7 +182,7 @@ function ListClients_2() {
                     <td>{client.nome}</td>
                     <td>{client.tipo}</td>
                     <td>
-                      {client.situacao === "ativo" ? <FaCheck /> : "Inativo"}
+                      {client.situacao === "ativo" ? "Ativo" : "Inativo"}
                     </td>
                     <td>{client.telefone}</td>
                     <td>{client.celular}</td>
