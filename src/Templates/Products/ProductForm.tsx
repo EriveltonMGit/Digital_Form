@@ -70,7 +70,7 @@ const ProductForm: React.FC = () => {
         form.resetFields();
       }
     } catch (error) {
-      console.error("Erro ao enviar os dados:", error);
+    console.error("Erro ao enviar os dados:", error);
       message.error("Erro ao cadastrar o produto.");
     } finally {
       setLoading(false);
